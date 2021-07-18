@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#21D3D3</color>
+    <color name="text">#525252</color>
+    <color name="disabled">#B5B5BF</color>
+    <color name="background">#F5F5F5</color>
+    <color name="occupied">#979797</color>
+    <color name="disabled_seat">#E3C2BD</color>
+    <color name="non_occupied">#4D21D3D3</color>
+    <color name="table">#E6E6E9</color>
+    <color name="seat">#CBCBD3</color>
+    <color name="sub_text">#9C9D9E</color>
+    <color name="hover">#B321D3D3</color>
+    <color name="button_disabled">#ECECEF</color>
 </resources>
