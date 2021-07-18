@@ -7,14 +7,50 @@
     tools:context=".MainActivity"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <com.otaliastudios.zoom.ZoomLayout
+        android:id="@+id/zoom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:alignment="center"
+        app:animationDuration="280"
+        app:flingEnabled="true"
+        app:hasClickableChildren="true"
+        app:horizontalPanEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:oneFingerScrollEnabled="true"
+        app:overPinchable="true"
+        app:overScrollHorizontal="true"
+        app:overScrollVertical="true"
+        app:scrollEnabled="true"
+        app:threeFingersScrollEnabled="true"
+        app:transformation="centerInside"
+        app:transformationGravity="auto"
+        app:twoFingersScrollEnabled="true"
+        app:verticalPanEnabled="true"
+        app:zoomEnabled="true"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map"
+            android:layout_width="1858dp"
+            android:layout_height="1120dp"
+            android:background="@drawable/map"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="67dp"
+                android:layout_marginTop="115dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.otaliastudios.zoom.ZoomLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
