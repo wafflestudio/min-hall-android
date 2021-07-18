@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".view.MainActivity"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,18 +65,8 @@
             android:layout_width="1858dp"
             android:layout_height="1120dp"
             android:background="@drawable/map"
-            >
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="67dp"
-                android:layout_marginTop="115dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:visibility="invisible"
+            />
 
     </com.otaliastudios.zoom.ZoomLayout>
 
@@ -228,7 +218,9 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:background="@drawable/cta_button_background"
+        android:enabled="false"
         android:text="@string/select_seat"
+        android:textColor="@color/cta_button_text"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
