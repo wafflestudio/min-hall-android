@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity"
     >
 
@@ -16,7 +17,7 @@
         app:flingEnabled="true"
         app:hasClickableChildren="true"
         app:horizontalPanEnabled="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cta_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,5 +108,106 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/legend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cta_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <View
+            android:id="@+id/taken_square_color"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:background="@color/seat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/taken_seat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/taken_seat"
+            android:textColor="@color/text"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/taken_square_color"
+            app:layout_constraintStart_toEndOf="@+id/taken_square_color"
+            app:layout_constraintTop_toTopOf="@+id/taken_square_color"
+            />
+
+        <View
+            android:id="@+id/disabled_square_color"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="15dp"
+            android:background="@color/disabled_seat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/taken_seat_text"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/disabled_seat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/disabled_seat"
+            android:textColor="@color/text"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/disabled_square_color"
+            app:layout_constraintStart_toEndOf="@+id/disabled_square_color"
+            app:layout_constraintTop_toTopOf="@+id/disabled_square_color"
+            />
+
+        <View
+            android:id="@+id/non_occupied_square_color"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="15dp"
+            android:background="@color/non_occupied"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/disabled_seat_text"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/non_occupied_seat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/non_occupied_seat"
+            android:textColor="@color/text"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/non_occupied_square_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/non_occupied_square_color"
+            app:layout_constraintTop_toTopOf="@+id/non_occupied_square_color"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/cta_button"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/cta_button_background"
+        android:text="@string/select_seat"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
