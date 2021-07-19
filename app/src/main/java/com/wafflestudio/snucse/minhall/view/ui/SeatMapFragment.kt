@@ -170,6 +170,7 @@ class SeatMapFragment : BaseFragment() {
             }, { t ->
                 Timber.e(t)
             })
+            .disposeOnDestroyView()
 
         seatMapViewModel.observeSeatSelected()
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -179,5 +180,6 @@ class SeatMapFragment : BaseFragment() {
             }, { t ->
                 Timber.e(t)
             })
+            .disposeOnDestroyView()
     }
 }
