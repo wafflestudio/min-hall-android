@@ -1,6 +1,8 @@
 package com.wafflestudio.snucse.minhall.view.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.graphics.Matrix
 import android.os.Bundle
 import android.view.View
@@ -17,8 +19,11 @@ import timber.log.Timber
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    companion object {
+        fun intent(context: Context) = Intent(context, MainActivity::class.java)
+    }
 
+    private lateinit var binding: ActivityMainBinding
 
     private val seatMapViewModel: SeatMapViewModel by viewModels()
 
