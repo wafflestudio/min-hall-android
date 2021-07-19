@@ -39,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:alignment="center"
-        app:animationDuration="280"
+        app:animationDuration="0"
         app:flingEnabled="true"
         app:hasClickableChildren="true"
         app:horizontalPanEnabled="true"
