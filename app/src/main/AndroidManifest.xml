@@ -24,7 +24,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".view.ui.LoginActivity"
+            android:theme="@style/Theme.MinHall.Login"
+            android:windowSoftInputMode="adjustResize"
+            />
+
         <activity android:name=".view.ui.MainActivity" />
+
     </application>
 
 </manifest>

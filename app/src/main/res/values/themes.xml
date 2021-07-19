@@ -16,6 +16,11 @@
         <item name="android:windowBackground">@color/white</item>
     </style>
 
+    <style name="Theme.MinHall.Login">
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary</item>
+    </style>
+
     <style name="Theme.MinHall.Launcher">
         <item name="android:windowBackground">@drawable/launcher_background</item>
         <item name="android:statusBarColor">@color/primary</item>

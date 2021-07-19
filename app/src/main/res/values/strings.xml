@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">SNU 민상렬홀</string>
 
-    <string name="select_seat">좌선 선택하기</string>
+    <string name="snucse_id_label">SNUCSE 아이디</string>
+    <string name="register">가입신청</string>
+    <string name="password_label">비밀번호</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="login">로그인</string>
+
+    <string name="select_seat">좌석 선택하기</string>
 
     <string name="taken_seat">예약된 좌석</string>
     <string name="disabled_seat">사용불가</string>
