@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
     fun toSeatMap() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            supportFragmentManager.findFragmentByTag(TimeSelectFragment.TAG)?.let { remove(it) }
+            supportFragmentManager.findFragmentByTag(TimeSelectFragment.TAG)?.let { hide(it) }
             addToBackStack(null)
         }
     }
