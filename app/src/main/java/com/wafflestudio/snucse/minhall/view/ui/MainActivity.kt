@@ -25,7 +25,8 @@ class MainActivity : BaseActivity() {
 
     private fun initializeViews() {
         supportFragmentManager.commit {
-            add(R.id.fragment_container, SeatMapFragment.create(), SeatMapFragment.TAG)
+//            add(R.id.fragment_container, SeatMapFragment.create(), SeatMapFragment.TAG)
+            add(R.id.fragment_container, TimeSelectFragment.create(), TimeSelectFragment.TAG)
         }
     }
 }

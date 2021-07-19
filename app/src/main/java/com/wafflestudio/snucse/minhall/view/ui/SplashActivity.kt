@@ -7,7 +7,7 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startActivity(LoginActivity.intent(this))
+        startActivity(MainActivity.intent(this))
 
         finish()
     }

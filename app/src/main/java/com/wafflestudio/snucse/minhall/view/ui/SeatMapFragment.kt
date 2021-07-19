@@ -28,6 +28,15 @@ class SeatMapFragment : BaseFragment() {
     private var _binding: FragmentSeatMapBinding? = null
     private val binding get() = _binding!!
 
+    private val seatMapViewModel: SeatMapViewModel by activityViewModels()
+
+    private val baselinedZoom
+        get() = binding.zoom.height.toFloat() / binding.map.height / binding.zoom.realZoom
+
+    private var idleCalled = false
+
+    private var seatButtons: List<SeatButton> = emptyList()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,15 +59,6 @@ class SeatMapFragment : BaseFragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    private val seatMapViewModel: SeatMapViewModel by activityViewModels()
-
-    private val baselinedZoom
-        get() = binding.zoom.height.toFloat() / binding.map.height / binding.zoom.realZoom
-
-    private var idleCalled = false
-
-    private var seatButtons: List<SeatButton> = emptyList()
 
     private fun initializeZoom() {
         binding.zoom.setMaxZoom(baselinedZoom * 2)
