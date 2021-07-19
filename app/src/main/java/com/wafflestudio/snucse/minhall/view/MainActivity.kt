@@ -5,31 +5,30 @@ import android.graphics.Matrix
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
 import com.wafflestudio.snucse.minhall.model.Seat
-import com.wafflestudio.snucse.minhall.model.Selection
-import com.wafflestudio.snucse.minhall.model.tables
 import com.wafflestudio.snucse.minhall.util.dp
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private var selection: Selection? = null
-        set(value) {
-            field = value
-            binding.ctaButton.isEnabled = value != null
-        }
+
+    private val seatMapViewModel: SeatMapViewModel by viewModels()
 
     private val baselinedZoom
         get() = binding.zoom.height.toFloat() / binding.map.height / binding.zoom.realZoom
 
     private var idleCalled = false
+
+    private var seatButtons: List<Button> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             initializeZoom()
             initializeScanner()
             initializeMap()
+
+            observeViewModels()
         }
     }
 
@@ -100,69 +101,99 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeMap() {
-        tables.forEach { table ->
-            table.seats.forEach { seat ->
-                val seatButton = Button(this).apply {
-                    id = table.index * 12 + seat.index
-                    background = ContextCompat.getDrawable(
-                        this@MainActivity,
-                        R.drawable.seat_button_background
-                    )
-                    when (seat.mode) {
-                        Seat.Mode.AVAILABLE -> {
-                            isEnabled = true
-                        }
-                        Seat.Mode.TAKEN -> {
-                            isEnabled = false
-                            isActivated = true
-                        }
-                        Seat.Mode.DISABLED -> {
-                            isEnabled = false
-                            isActivated = false
-                        }
-                    }
-
-                    setOnClickListener {
-                        selection?.let {
-                            it.button.isActivated = false
-                            if (it.button == this) {
-                                selection = null
-                            } else {
-                                selection = Selection(this, table, seat)
-                                isActivated = true
-                            }
-                        } ?: run {
-                            selection = Selection(this, table, seat)
-                            isActivated = true
-                        }
-                    }
-                }
-                binding.map.addView(seatButton)
-                ConstraintSet().also { set ->
-                    set.clone(binding.map)
-
-                    set.connect(
-                        seatButton.id,
-                        ConstraintSet.LEFT,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.LEFT,
-                        seat.x.dp
-                    )
-                    set.connect(
-                        seatButton.id,
-                        ConstraintSet.TOP,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.TOP,
-                        seat.y.dp
-                    )
-
-                    set.applyTo(binding.map)
-                }
-                seatButton.layoutParams = seatButton.layoutParams.apply {
-                    width = 42.dp
-                    height = 42.dp
-                }
+        seatButtons = Seat.seats.map { seat ->
+            createSeatButton(seat).also { seatButton ->
+                addSeatButtonToMap(seatButton, seat.x.dp, seat.y.dp)
+                resizeSeatButton(seatButton)
             }
         }
+    }
+
+    private fun createSeatButton(seat: Seat): Button {
+        return Button(this).apply {
+            id = seat.id
+            background = ContextCompat.getDrawable(
+                this@MainActivity,
+                R.drawable.seat_button_background
+            )
+
+            isEnabled = false
+            isActivated = true
+
+            setOnClickListener {
+                seatMapViewModel.selectSeat(seat.id)
+            }
+        }
+    }
+
+    private fun addSeatButtonToMap(seatButton: Button, x: Int, y: Int) {
+        binding.map.addView(seatButton)
+
+        ConstraintSet().also { set ->
+            set.clone(binding.map)
+
+            set.connect(
+                seatButton.id,
+                ConstraintSet.LEFT,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.LEFT,
+                x,
+            )
+            set.connect(
+                seatButton.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                y,
+            )
+
+            set.applyTo(binding.map)
+        }
+    }
+
+    private fun resizeSeatButton(seatButton: Button) {
+        seatButton.layoutParams = seatButton.layoutParams.apply {
+            width = 42.dp
+            height = 42.dp
+        }
+    }
+
+    private fun observeViewModels() {
+        seatMapViewModel.observeSeats()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ seats ->
+                seats.zip(seatButtons).forEach { (seat, button) ->
+                    when (seat.mode) {
+                        Seat.Mode.AVAILABLE -> {
+                            button.isEnabled = true
+                            button.isActivated = false
+                        }
+                        Seat.Mode.SELECTED -> {
+                            button.isEnabled = true
+                            button.isActivated = true
+                        }
+                        Seat.Mode.TAKEN -> {
+                            button.isEnabled = false
+                            button.isActivated = true
+                        }
+                        Seat.Mode.DISABLED -> {
+                            button.isEnabled = false
+                            button.isActivated = false
+                        }
+                    }
+                }
+            }, { t ->
+                Timber.e(t)
+            })
+
+        seatMapViewModel.observeSeatSelected()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ seatSelected ->
+                binding.ctaButton.isEnabled = seatSelected
+            }, { t ->
+                Timber.e(t)
+            })
     }
 }
