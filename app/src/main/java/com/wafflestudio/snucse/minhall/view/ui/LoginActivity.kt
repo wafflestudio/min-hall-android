@@ -2,6 +2,7 @@ package com.wafflestudio.snucse.minhall.view.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -36,5 +37,17 @@ class LoginActivity : BaseActivity() {
                 false
             }
         }
+
+        binding.registerButton.setOnClickListener {
+            startActivity(webIntent("https://id.snucse.org/verify"))
+        }
+
+        binding.findPasswordButton.setOnClickListener {
+            startActivity(webIntent("https://id.snucse.org/password-reset"))
+        }
+    }
+
+    private fun webIntent(url: String): Intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(url)
     }
 }
