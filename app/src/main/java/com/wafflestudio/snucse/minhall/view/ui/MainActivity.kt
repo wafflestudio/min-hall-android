@@ -25,8 +25,16 @@ class MainActivity : BaseActivity() {
 
     private fun initializeViews() {
         supportFragmentManager.commit {
-//            add(R.id.fragment_container, SeatMapFragment.create(), SeatMapFragment.TAG)
+            setReorderingAllowed(true)
             add(R.id.fragment_container, TimeSelectFragment.create(), TimeSelectFragment.TAG)
+        }
+    }
+
+    fun toSeatMap() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.fragment_container, SeatMapFragment.create(), SeatMapFragment.TAG)
+            addToBackStack(null)
         }
     }
 }

@@ -51,6 +51,11 @@ class TimeSelectFragment : BaseFragment() {
         binding.endHourDownButton.setOnClickListener { timeSelectViewModel.decrementEndHour() }
         binding.endMinuteUpButton.setOnClickListener { timeSelectViewModel.incrementEndMinute() }
         binding.endMinuteDownButton.setOnClickListener { timeSelectViewModel.decrementEndMinute() }
+
+        binding.ctaButton.isEnabled = true
+        binding.ctaButton.setOnClickListener {
+            (activity as? MainActivity)?.toSeatMap()
+        }
     }
 
     private fun observeViewModel() {

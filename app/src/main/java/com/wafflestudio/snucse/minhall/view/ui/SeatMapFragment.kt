@@ -57,12 +57,34 @@ class SeatMapFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.zoom.engine.removeListener(scannerZoomEngineListener)
         _binding = null
     }
 
     private fun initializeZoom() {
         binding.zoom.setMaxZoom(baselinedZoom * 2)
         binding.zoom.setMinZoom(baselinedZoom)
+    }
+
+    private var scannerZoomEngineListener: ZoomEngine.Listener = object : ZoomEngine.Listener {
+        override fun onIdle(engine: ZoomEngine) {
+            binding.miniMap.visibility = View.INVISIBLE
+            binding.map.visibility = View.VISIBLE
+            idleCalled = true
+        }
+
+        override fun onUpdate(engine: ZoomEngine, matrix: Matrix) {
+            if (idleCalled) binding.miniMap.visibility = View.VISIBLE
+
+            scaleScanner()
+
+            val xPercent = engine.computeHorizontalScrollOffset()
+                .toFloat() / engine.computeHorizontalScrollRange()
+            val yPercent = engine.computeVerticalScrollOffset()
+                .toFloat() / engine.computeVerticalScrollRange()
+
+            moveScanner(xPercent, yPercent)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -72,25 +94,7 @@ class SeatMapFragment : BaseFragment() {
             width = height * binding.zoom.width / binding.zoom.height
         }
 
-        binding.zoom.engine.addListener(object : ZoomEngine.Listener {
-            override fun onIdle(engine: ZoomEngine) {
-                binding.miniMap.visibility = View.INVISIBLE
-                binding.map.visibility = View.VISIBLE
-                idleCalled = true
-            }
-
-            override fun onUpdate(engine: ZoomEngine, matrix: Matrix) {
-                if (idleCalled) binding.miniMap.visibility = View.VISIBLE
-
-                val xPercent = engine.computeHorizontalScrollOffset()
-                    .toFloat() / engine.computeHorizontalScrollRange()
-                val yPercent = engine.computeVerticalScrollOffset()
-                    .toFloat() / engine.computeVerticalScrollRange()
-
-                scaleScanner()
-                moveScanner(xPercent, yPercent)
-            }
-        })
+        binding.zoom.engine.addListener(scannerZoomEngineListener)
     }
 
     private fun scaleScanner() {
