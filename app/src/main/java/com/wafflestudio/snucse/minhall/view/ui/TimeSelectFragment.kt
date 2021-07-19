@@ -34,6 +34,8 @@ class TimeSelectFragment : BaseFragment() {
         initializeViews()
         observeViewModel()
 
+        showNoticeDialog("Hello", "World", "OK")
+
         return binding.root
     }
 
@@ -80,5 +82,9 @@ class TimeSelectFragment : BaseFragment() {
                 Timber.e(t)
             })
             .disposeOnDestroyView()
+    }
+
+    private fun showNoticeDialog(title: String, body: String, action: String) {
+        NoticeDialogFragment.show(childFragmentManager, title, body, action)
     }
 }
