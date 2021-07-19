@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view
+package com.wafflestudio.snucse.minhall.view.ui
 
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snucse.minhall.model.Seat

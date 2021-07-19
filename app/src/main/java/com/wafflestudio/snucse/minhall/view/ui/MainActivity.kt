@@ -1,18 +1,17 @@
-package com.wafflestudio.snucse.minhall.view
+package com.wafflestudio.snucse.minhall.view.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
+import com.wafflestudio.snucse.minhall.view.SeatButton
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 
@@ -28,7 +27,7 @@ class MainActivity : BaseActivity() {
 
     private var idleCalled = false
 
-    private var seatButtons: List<Button> = emptyList()
+    private var seatButtons: List<SeatButton> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,45 +101,30 @@ class MainActivity : BaseActivity() {
 
     private fun initializeMap() {
         seatButtons = Seat.seats.map { seat ->
-            createSeatButton(seat).also { seatButton ->
-                addSeatButtonToMap(seatButton, seat.x.dp, seat.y.dp)
-                resizeSeatButton(seatButton)
+            SeatButton(this).apply {
+                addToMap(seat.x.dp, seat.y.dp)
+                setOnClickListener {
+                    seatMapViewModel.selectSeat(seat.id)
+                }
             }
         }
     }
 
-    private fun createSeatButton(seat: Seat): Button {
-        return Button(this).apply {
-            id = seat.id
-            background = ContextCompat.getDrawable(
-                this@MainActivity,
-                R.drawable.seat_button_background
-            )
-
-            isEnabled = false
-            isActivated = true
-
-            setOnClickListener {
-                seatMapViewModel.selectSeat(seat.id)
-            }
-        }
-    }
-
-    private fun addSeatButtonToMap(seatButton: Button, x: Int, y: Int) {
-        binding.map.addView(seatButton)
+    private fun SeatButton.addToMap(x: Int, y: Int) {
+        binding.map.addView(this)
 
         ConstraintSet().also { set ->
             set.clone(binding.map)
 
             set.connect(
-                seatButton.id,
+                this.id,
                 ConstraintSet.LEFT,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.LEFT,
                 x,
             )
             set.connect(
-                seatButton.id,
+                this.id,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.TOP,
@@ -148,13 +132,6 @@ class MainActivity : BaseActivity() {
             )
 
             set.applyTo(binding.map)
-        }
-    }
-
-    private fun resizeSeatButton(seatButton: Button) {
-        seatButton.layoutParams = seatButton.layoutParams.apply {
-            width = 42.dp
-            height = 42.dp
         }
     }
 
