@@ -70,33 +70,40 @@ class MainActivity : BaseActivity() {
                 val yPercent = engine.computeVerticalScrollOffset()
                     .toFloat() / engine.computeVerticalScrollRange()
 
-                binding.scanner.layoutParams = binding.scanner.layoutParams.apply {
-                    height = (binding.miniMapInner.height * baselinedZoom).toInt()
-                    width = height * binding.zoom.width / binding.zoom.height
-                }
-
-                ConstraintSet().also { set ->
-                    set.clone(binding.miniMapInner)
-
-                    set.connect(
-                        R.id.scanner,
-                        ConstraintSet.LEFT,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.LEFT,
-                        (xPercent * binding.miniMapInner.width).toInt()
-                    )
-                    set.connect(
-                        R.id.scanner,
-                        ConstraintSet.TOP,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.TOP,
-                        (yPercent * binding.miniMapInner.height).toInt()
-                    )
-
-                    set.applyTo(binding.miniMapInner)
-                }
+                scaleScanner()
+                moveScanner(xPercent, yPercent)
             }
         })
+    }
+
+    private fun scaleScanner() {
+        binding.scanner.layoutParams = binding.scanner.layoutParams.apply {
+            height = (binding.miniMapInner.height * baselinedZoom).toInt()
+            width = height * binding.zoom.width / binding.zoom.height
+        }
+    }
+
+    private fun moveScanner(xPercent: Float, yPercent: Float) {
+        ConstraintSet().also { set ->
+            set.clone(binding.miniMapInner)
+
+            set.connect(
+                R.id.scanner,
+                ConstraintSet.LEFT,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.LEFT,
+                (xPercent * binding.miniMapInner.width).toInt()
+            )
+            set.connect(
+                R.id.scanner,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                (yPercent * binding.miniMapInner.height).toInt()
+            )
+
+            set.applyTo(binding.miniMapInner)
+        }
     }
 
     private fun initializeMap() {
