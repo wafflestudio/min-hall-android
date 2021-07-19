@@ -147,25 +147,8 @@ class MainActivity : BaseActivity() {
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ seats ->
-                seats.zip(seatButtons).forEach { (seat, button) ->
-                    when (seat.mode) {
-                        Seat.Mode.AVAILABLE -> {
-                            button.isEnabled = true
-                            button.isActivated = false
-                        }
-                        Seat.Mode.SELECTED -> {
-                            button.isEnabled = true
-                            button.isActivated = true
-                        }
-                        Seat.Mode.TAKEN -> {
-                            button.isEnabled = false
-                            button.isActivated = true
-                        }
-                        Seat.Mode.DISABLED -> {
-                            button.isEnabled = false
-                            button.isActivated = false
-                        }
-                    }
+                seats.zip(seatButtons).forEach { (seat, seatButton) ->
+                    seatButton.handleMode(seat.mode)
                 }
             }, { t ->
                 Timber.e(t)
