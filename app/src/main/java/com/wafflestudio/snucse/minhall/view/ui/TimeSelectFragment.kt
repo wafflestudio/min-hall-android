@@ -9,7 +9,6 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentTimeSelectBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
-import java.util.*
 
 class TimeSelectFragment : BaseFragment() {
 
@@ -34,7 +33,7 @@ class TimeSelectFragment : BaseFragment() {
         initializeViews()
         observeViewModel()
 
-        showNoticeDialog("Hello", "World", "OK")
+        showAlertDialog("Hello", { Timber.d("Confirm") }, null)
 
         return binding.root
     }
@@ -82,9 +81,5 @@ class TimeSelectFragment : BaseFragment() {
                 Timber.e(t)
             })
             .disposeOnDestroyView()
-    }
-
-    private fun showNoticeDialog(title: String, body: String, action: String) {
-        NoticeDialogFragment.show(childFragmentManager, title, body, action)
     }
 }

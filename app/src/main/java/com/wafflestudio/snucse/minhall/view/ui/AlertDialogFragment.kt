@@ -5,40 +5,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import com.wafflestudio.snucse.minhall.databinding.DialogFragmentAlertBinding
 import com.wafflestudio.snucse.minhall.databinding.DialogFragmentNoticeBinding
 
-class NoticeDialogFragment : BaseDialogFragment() {
+class AlertDialogFragment(
+    private val onConfirm: () -> Unit,
+    private val onCancel: (() -> Unit)?,
+) : BaseDialogFragment() {
 
-    private var _binding: DialogFragmentNoticeBinding? = null
+    private var _binding: DialogFragmentAlertBinding? = null
     private val binding get() = _binding!!
 
     companion object {
         private const val TAG = "Notice"
 
-        private const val EXTRA_TITLE = "EXTRA_TITLE"
         private const val EXTRA_BODY = "EXTRA_BODY"
-        private const val EXTRA_ACTION = "EXTRA_ACTION"
 
-        fun show(fragmentManager: FragmentManager, title: String, body: String, action: String) =
-            NoticeDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putString(EXTRA_TITLE, title)
-                    putString(EXTRA_BODY, body)
-                    putString(EXTRA_ACTION, action)
-                }
-            }.show(fragmentManager, TAG)
+        fun show(
+            fragmentManager: FragmentManager,
+            body: String,
+            onConfirm: () -> Unit,
+            onCancel: (() -> Unit)?,
+        ) = AlertDialogFragment(onConfirm, onCancel).apply {
+            arguments = Bundle().apply {
+                putString(EXTRA_BODY, body)
+            }
+        }.show(fragmentManager, TAG)
     }
 
-    private val title by lazy { arguments?.getString(EXTRA_TITLE) ?: "" }
     private val body by lazy { arguments?.getString(EXTRA_BODY) ?: "" }
-    private val action by lazy { arguments?.getString(EXTRA_ACTION) ?: "" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentNoticeBinding.inflate(inflater, container, false)
+        _binding = DialogFragmentAlertBinding.inflate(inflater, container, false)
 
         initializeViews()
 
@@ -60,11 +62,19 @@ class NoticeDialogFragment : BaseDialogFragment() {
     }
 
     private fun initializeViews() {
-        binding.ctaButton.setOnClickListener {
+        binding.okButton.setOnClickListener {
+            onConfirm()
             dismiss()
         }
-        binding.titleText.text = title
+        onCancel?.let { onCancel ->
+            binding.cancelButton.setOnClickListener {
+                onCancel()
+                dismiss()
+            }
+        } ?: run {
+            binding.cancelButton.visibility = View.GONE
+        }
+
         binding.bodyText.text = body
-        binding.ctaButton.text = action
     }
 }

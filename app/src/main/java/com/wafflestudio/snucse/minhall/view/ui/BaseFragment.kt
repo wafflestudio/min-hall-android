@@ -46,4 +46,12 @@ abstract class BaseFragment : Fragment() {
     protected fun Disposable.disposeOnDetach(): Disposable = this.apply {
         onDetachCompositeDisposable.add(this)
     }
+
+    protected fun showNoticeDialog(title: String, body: String, action: String) {
+        NoticeDialogFragment.show(childFragmentManager, title, body, action)
+    }
+
+    protected fun showAlertDialog(body: String, onConfirm: () -> Unit, onCancel: (() -> Unit)?) {
+        AlertDialogFragment.show(childFragmentManager, body, onConfirm, onCancel)
+    }
 }
