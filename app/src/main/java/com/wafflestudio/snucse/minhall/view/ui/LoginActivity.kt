@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import com.wafflestudio.snucse.minhall.databinding.ActivityLoginBinding
 
 class LoginActivity : BaseActivity() {
@@ -26,7 +25,8 @@ class LoginActivity : BaseActivity() {
 
     private fun initializeViews() {
         binding.loginButton.setOnClickListener {
-            Toast.makeText(this, "Login pressed", Toast.LENGTH_SHORT).show()
+            startActivity(MainActivity.intent(this))
+            finish()
         }
 
         binding.passwordInput.setOnEditorActionListener { _, actionId, _ ->
