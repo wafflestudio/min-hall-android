@@ -22,7 +22,7 @@ class SeatButton(context: Context) : androidx.appcompat.widget.AppCompatButton(c
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val sideMeasureSpec = MeasureSpec.makeMeasureSpec(42.dp, MeasureSpec.EXACTLY)
+        val sideMeasureSpec = MeasureSpec.makeMeasureSpec(34.dp, MeasureSpec.EXACTLY)
         setMeasuredDimension(sideMeasureSpec, sideMeasureSpec)
     }
 

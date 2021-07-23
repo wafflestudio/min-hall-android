@@ -130,7 +130,7 @@ class SeatMapFragment : BaseFragment() {
     private fun initializeMap() {
         seatButtons = Seat.seats.map { seat ->
             SeatButton(requireContext()).apply {
-                addToMap(seat.x.dp, seat.y.dp)
+                addToMap(seat.x.dp, seat.y.dp, seat.rotation)
                 setOnClickListener {
                     seatMapViewModel.selectSeat(seat.id)
                 }
@@ -138,7 +138,8 @@ class SeatMapFragment : BaseFragment() {
         }
     }
 
-    private fun SeatButton.addToMap(x: Int, y: Int) {
+    private fun SeatButton.addToMap(x: Int, y: Int, rotation: Float) {
+        this.rotation = rotation
         binding.map.addView(this)
 
         ConstraintSet().also { set ->
