@@ -13,7 +13,7 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
-import com.wafflestudio.snucse.minhall.view.MiniMapSeat
+import com.wafflestudio.snucse.minhall.view.MiniMapSeatView
 import com.wafflestudio.snucse.minhall.view.SeatButton
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -165,7 +165,7 @@ class SeatMapFragment : BaseFragment() {
         }
     }
 
-    private fun MiniMapSeat.addToMap(x: Int, y: Int, rotation: Float) {
+    private fun MiniMapSeatView.addToMap(x: Int, y: Int, rotation: Float) {
         this.rotation = rotation
         binding.miniMapInner.addView(this)
 
@@ -199,6 +199,7 @@ class SeatMapFragment : BaseFragment() {
                 seats.zip(seatButtons).forEach { (seat, seatButton) ->
                     seatButton.handleMode(seat.mode)
                 }
+                binding.miniMapImage.seats = seats
             }, { t ->
                 Timber.e(t)
             })

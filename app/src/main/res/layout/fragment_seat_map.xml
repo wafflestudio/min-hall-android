@@ -97,7 +97,7 @@
             app:layout_constraintTop_toTopOf="parent"
             >
 
-            <com.wafflestudio.snucse.minhall.view.MiniMap
+            <com.wafflestudio.snucse.minhall.view.MiniMapView
                 android:id="@+id/mini_map_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

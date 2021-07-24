@@ -28,7 +28,7 @@ class SeatButton @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val sideMeasureSpec = MeasureSpec.makeMeasureSpec(34.dp, MeasureSpec.EXACTLY)
-        setMeasuredDimension(sideMeasureSpec, sideMeasureSpec)
+        super.onMeasure(sideMeasureSpec, sideMeasureSpec)
     }
 
     fun handleMode(mode: Seat.Mode) {

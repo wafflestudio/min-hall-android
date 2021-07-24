@@ -7,7 +7,7 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
 
-class MiniMapSeat(context: Context) : View(context) {
+class MiniMapSeatView(context: Context) : View(context) {
 
     init {
         id = generateViewId()
@@ -23,7 +23,7 @@ class MiniMapSeat(context: Context) : View(context) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val sideMeasureSpec = MeasureSpec.makeMeasureSpec(4.dp, MeasureSpec.EXACTLY)
-        setMeasuredDimension(sideMeasureSpec, sideMeasureSpec)
+        super.onMeasure(sideMeasureSpec, sideMeasureSpec)
     }
 
     fun handleMode(mode: Seat.Mode) {
