@@ -15,7 +15,7 @@ class TimeSelectView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
-    private val binding: ViewTimeSelectBinding
+    private val binding = ViewTimeSelectBinding.inflate(LayoutInflater.from(context), this)
 
     private var timeChangedListener: ((Time) -> Unit)? = null
 
@@ -34,10 +34,6 @@ class TimeSelectView @JvmOverloads constructor(
         }
 
     init {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        binding = ViewTimeSelectBinding.inflate(inflater, this)
-
         initializeViews()
     }
 

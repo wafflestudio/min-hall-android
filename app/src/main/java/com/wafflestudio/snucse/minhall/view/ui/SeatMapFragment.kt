@@ -40,10 +40,7 @@ class SeatMapFragment : BaseFragment() {
         _binding = FragmentSeatMapBinding.inflate(inflater, container, false)
 
         binding.map.post {
-            initializeZoom()
-            initializeScanner()
-            initializeMap()
-
+            initializeViews()
             observeViewModels()
         }
 
@@ -54,6 +51,24 @@ class SeatMapFragment : BaseFragment() {
         super.onDestroyView()
         binding.zoom.engine.removeListener(scannerZoomEngineListener)
         _binding = null
+    }
+
+    private fun initializeViews() {
+        initializeAppBar()
+        initializeCtaButton()
+        initializeZoom()
+        initializeScanner()
+        initializeMap()
+    }
+
+    private fun initializeAppBar() {
+        binding.appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
+    }
+
+    private fun initializeCtaButton() {
+        binding.ctaButton.setOnClickListener {
+            (activity as? MainActivity)?.toReservation()
+        }
     }
 
     private fun initializeZoom() {

@@ -38,4 +38,11 @@ class MainActivity : BaseActivity() {
             addToBackStack(null)
         }
     }
+
+    fun toReservation() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add(R.id.fragment_container, ReservationFragment.create(), ReservationFragment.TAG)
+        }
+    }
 }

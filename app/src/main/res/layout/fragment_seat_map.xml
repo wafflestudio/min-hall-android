@@ -7,32 +7,15 @@
     tools:context=".view.ui.MainActivity"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/app_bar_layout"
+    <com.wafflestudio.snucse.minhall.view.AppBar
+        android:id="@+id/app_bar"
         android:layout_width="0dp"
-        android:layout_height="61dp"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
         android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
-            android:text="@string/app_name"
-            android:textColor="@color/text"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        />
 
     <com.otaliastudios.zoom.ZoomLayout
         android:id="@+id/zoom"
@@ -46,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@id/legend_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
         app:oneFingerScrollEnabled="true"
         app:overPinchable="false"
         app:overScrollHorizontal="false"
@@ -79,7 +62,7 @@
         android:background="@color/text"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
         tools:visibility="visible"
         >
 
@@ -225,15 +208,11 @@
 
     <Button
         android:id="@+id/cta_button"
-        style="?android:borderlessButtonStyle"
+        style="@style/CtaButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@drawable/cta_button_background"
         android:enabled="false"
         android:text="@string/select_seat"
-        android:textColor="@color/cta_button_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
