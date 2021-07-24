@@ -71,7 +71,7 @@
     </com.otaliastudios.zoom.ZoomLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mini_map"
+        android:id="@+id/mini_map_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -98,7 +98,7 @@
             >
 
             <com.wafflestudio.snucse.minhall.view.MiniMapView
-                android:id="@+id/mini_map_image"
+                android:id="@+id/mini_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"

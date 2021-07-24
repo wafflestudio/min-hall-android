@@ -63,13 +63,13 @@ class SeatMapFragment : BaseFragment() {
 
     private var scannerZoomEngineListener: ZoomEngine.Listener = object : ZoomEngine.Listener {
         override fun onIdle(engine: ZoomEngine) {
-            binding.miniMap.visibility = View.INVISIBLE
+            binding.miniMapContainer.visibility = View.INVISIBLE
             binding.map.visibility = View.VISIBLE
             idleCalled = true
         }
 
         override fun onUpdate(engine: ZoomEngine, matrix: Matrix) {
-            if (idleCalled) binding.miniMap.visibility = View.VISIBLE
+            if (idleCalled) binding.miniMapContainer.visibility = View.VISIBLE
 
             scaleScanner()
 
@@ -108,14 +108,14 @@ class SeatMapFragment : BaseFragment() {
                 ConstraintSet.LEFT,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.LEFT,
-                (xPercent * binding.miniMapInner.width).toInt()
+                (xPercent * binding.miniMap.width).toInt()
             )
             set.connect(
                 R.id.scanner,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
                 ConstraintSet.TOP,
-                (yPercent * binding.miniMapInner.height).toInt()
+                (yPercent * binding.miniMap.height).toInt()
             )
 
             set.applyTo(binding.miniMapInner)
@@ -134,7 +134,7 @@ class SeatMapFragment : BaseFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ seats ->
                 binding.map.seats = seats
-                binding.miniMapImage.seats = seats
+                binding.miniMap.seats = seats
             }, { t ->
                 Timber.e(t)
             })
