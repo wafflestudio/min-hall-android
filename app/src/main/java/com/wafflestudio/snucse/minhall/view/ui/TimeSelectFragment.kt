@@ -30,7 +30,7 @@ class TimeSelectFragment : BaseFragment() {
 
         initializeViews()
 
-        showAlertDialog("Hello", { Timber.d("Confirm") }, null)
+//        showAlertDialog("Hello", { Timber.d("Confirm") }, null)
 
         return binding.root
     }

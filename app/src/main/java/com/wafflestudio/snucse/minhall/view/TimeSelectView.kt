@@ -5,17 +5,17 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.wafflestudio.snucse.minhall.R
-import com.wafflestudio.snucse.minhall.databinding.TimeSelectBinding
+import com.wafflestudio.snucse.minhall.databinding.ViewTimeSelectBinding
 import com.wafflestudio.snucse.minhall.model.Time
 import java.util.*
 
-class TimeSelect @JvmOverloads constructor(
+class TimeSelectView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
-    private val binding: TimeSelectBinding
+    private val binding: ViewTimeSelectBinding
 
     private var timeChangedListener: ((Time) -> Unit)? = null
 
@@ -36,7 +36,7 @@ class TimeSelect @JvmOverloads constructor(
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        binding = TimeSelectBinding.inflate(inflater, this)
+        binding = ViewTimeSelectBinding.inflate(inflater, this)
 
         initializeViews()
     }

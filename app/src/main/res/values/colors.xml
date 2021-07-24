@@ -15,6 +15,7 @@
     <color name="disabled">#B5B5BF</color>
     <color name="background">#F5F5F5</color>
     <color name="occupied">#979797</color>
+    <color name="mini_map_seat">#A6A6A6</color>
     <color name="disabled_seat">#E3C2BD</color>
     <color name="non_occupied">#4D21D3D3</color>
     <color name="table">#E6E6E9</color>

@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class SeatMapViewModel : ViewModel() {
 
-    private val seatsSubject = BehaviorSubject.createDefault(Seat.seats)
+    private val seatsSubject = BehaviorSubject.createDefault(Seat.seats())
 
     fun observeSeats(): Observable<List<Seat>> = seatsSubject.hide()
 
