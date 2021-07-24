@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
+import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 
 class MainActivity : BaseActivity() {
@@ -50,7 +51,11 @@ class MainActivity : BaseActivity() {
     fun toElongateReservation() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(R.id.fragment_container, )
+            replace(
+                R.id.fragment_container,
+                ElongateReservationFragment.create(),
+                ElongateReservationFragment.TAG
+            )
             addToBackStack(null)
         }
 

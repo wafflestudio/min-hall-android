@@ -48,7 +48,11 @@ class ReservationFragment : BaseFragment() {
         binding.timeRangeText.text = "15:30 ~ 17:00"
     }
 
-    private fun initializeButtons(binding: FragmentReservationBinding) = Unit
+    private fun initializeButtons(binding: FragmentReservationBinding) {
+        binding.ctaButton.setOnClickListener {
+            (activity as? MainActivity)?.toElongateReservation()
+        }
+    }
 
     private fun observeViewModels(binding: FragmentReservationBinding) {
         seatMapViewModel.observeSeats()
