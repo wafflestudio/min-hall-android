@@ -1,10 +1,10 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.base
 
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
-abstract class BaseDialogFragment : DialogFragment() {
+abstract class BaseFragment : Fragment() {
 
     private val onPauseCompositeDisposable = CompositeDisposable()
     private val onDestroyCompositeDisposable = CompositeDisposable()
@@ -31,7 +31,6 @@ abstract class BaseDialogFragment : DialogFragment() {
         onDetachCompositeDisposable.clear()
     }
 
-
     protected fun Disposable.disposeOnPause(): Disposable = this.apply {
         onPauseCompositeDisposable.add(this)
     }
@@ -46,5 +45,13 @@ abstract class BaseDialogFragment : DialogFragment() {
 
     protected fun Disposable.disposeOnDetach(): Disposable = this.apply {
         onDetachCompositeDisposable.add(this)
+    }
+
+    protected fun showNoticeDialog(title: String, body: String, action: String) {
+        NoticeDialogFragment.show(childFragmentManager, title, body, action)
+    }
+
+    protected fun showAlertDialog(body: String, onConfirm: () -> Unit, onCancel: (() -> Unit)?) {
+        AlertDialogFragment.show(childFragmentManager, body, onConfirm, onCancel)
     }
 }

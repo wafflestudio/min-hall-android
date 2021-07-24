@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.main
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix
@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 

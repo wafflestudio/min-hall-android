@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable

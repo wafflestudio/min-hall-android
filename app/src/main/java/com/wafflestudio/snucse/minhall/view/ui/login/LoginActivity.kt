@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.login
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import com.wafflestudio.snucse.minhall.databinding.ActivityLoginBinding
+import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 
 class LoginActivity : BaseActivity() {
 

@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.wafflestudio.snucse.minhall.databinding.DialogFragmentAlertBinding
-import com.wafflestudio.snucse.minhall.databinding.DialogFragmentNoticeBinding
 
 class AlertDialogFragment(
     private val onConfirm: () -> Unit,

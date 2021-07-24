@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 
 class MainActivity : BaseActivity() {
 
@@ -44,5 +45,14 @@ class MainActivity : BaseActivity() {
             setReorderingAllowed(true)
             add(R.id.fragment_container, ReservationFragment.create(), ReservationFragment.TAG)
         }
+    }
+
+    fun toElongateReservation() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.fragment_container, )
+            addToBackStack(null)
+        }
+
     }
 }

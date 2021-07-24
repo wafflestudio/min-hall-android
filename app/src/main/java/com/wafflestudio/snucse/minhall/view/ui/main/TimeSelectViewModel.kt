@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snucse.minhall.model.Time

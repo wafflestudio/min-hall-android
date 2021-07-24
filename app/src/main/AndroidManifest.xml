@@ -14,7 +14,7 @@
         >
 
         <activity
-            android:name=".view.ui.SplashActivity"
+            android:name=".view.ui.splash.SplashActivity"
             android:theme="@style/Theme.MinHall.Launcher"
             >
             <intent-filter>
@@ -25,12 +25,12 @@
         </activity>
 
         <activity
-            android:name=".view.ui.LoginActivity"
+            android:name=".view.ui.login.LoginActivity"
             android:theme="@style/Theme.MinHall.Login"
             android:windowSoftInputMode="adjustResize"
             />
 
-        <activity android:name=".view.ui.MainActivity" />
+        <activity android:name=".view.ui.main.MainActivity" />
 
     </application>
 

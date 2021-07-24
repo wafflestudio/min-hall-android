@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

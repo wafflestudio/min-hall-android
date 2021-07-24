@@ -1,6 +1,8 @@
-package com.wafflestudio.snucse.minhall.view.ui
+package com.wafflestudio.snucse.minhall.view.ui.splash
 
 import android.os.Bundle
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
+import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 
 class SplashActivity : BaseActivity() {
 
