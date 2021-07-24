@@ -1,25 +1,20 @@
 package com.wafflestudio.snucse.minhall.view
 
 import android.content.Context
-import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
 
-class SeatButton @JvmOverloads constructor(
-    context: Context,
-    attributeSet: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-) : androidx.appcompat.widget.AppCompatButton(context, attributeSet, defStyleAttr) {
+class MiniMapSeat(context: Context) : View(context) {
 
     init {
-        id = View.generateViewId()
+        id = generateViewId()
 
         background = ContextCompat.getDrawable(
             context,
-            R.drawable.seat_button_background
+            R.drawable.mini_map_seat_background
         )
 
         isEnabled = false
@@ -27,7 +22,7 @@ class SeatButton @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val sideMeasureSpec = MeasureSpec.makeMeasureSpec(34.dp, MeasureSpec.EXACTLY)
+        val sideMeasureSpec = MeasureSpec.makeMeasureSpec(4.dp, MeasureSpec.EXACTLY)
         setMeasuredDimension(sideMeasureSpec, sideMeasureSpec)
     }
 

@@ -24,7 +24,7 @@ data class Seat(
         get() = mode == Mode.SELECTED
 
     companion object {
-        val seats = listOf(
+        fun seats() = listOf(
             // Table 1
             Seat(1, 183, 170, Mode.AVAILABLE, -30f),
             Seat(2, 224, 147, Mode.AVAILABLE, -30f),

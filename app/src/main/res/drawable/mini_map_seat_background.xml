@@ -3,31 +3,31 @@
     <item android:state_activated="false" android:state_enabled="false">
         <shape android:shape="rectangle">
             <solid android:color="@color/disabled_seat" />
-            <corners android:radius="6dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <solid android:color="@color/seat" />
-            <corners android:radius="6dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
     <item android:state_activated="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/primary" />
-            <corners android:radius="6dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/primary" />
-            <corners android:radius="6dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/non_occupied" />
-            <corners android:radius="6dp" />
+            <corners android:radius="1dp" />
         </shape>
     </item>
 </selector>
