@@ -4,22 +4,22 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
 
-class MiniMapView @JvmOverloads constructor(
+class SeatMapView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
     companion object {
-        private const val WIDTH = 184
-        private const val HEIGHT = 80
+        const val WIDTH = 1435
+        const val HEIGHT = 618
     }
 
-    private var miniMapSeatViews: List<MiniMapSeatView> = emptyList()
     var seats: List<Seat> = emptyList()
         set(value) {
             if (field != value) {
@@ -28,9 +28,15 @@ class MiniMapView @JvmOverloads constructor(
             field = value
             updateViews()
         }
+    private var onSeatClickListener: ((Seat) -> Unit)? = null
+    private var seatButtons: List<SeatButton> = emptyList()
 
     init {
-        setBackgroundResource(R.drawable.mini_map)
+        background = ContextCompat.getDrawable(context, R.drawable.map)
+    }
+
+    fun setOnSeatClickListener(onSeatClickListener: ((Seat) -> Unit)?) {
+        this.onSeatClickListener = onSeatClickListener
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -42,28 +48,27 @@ class MiniMapView @JvmOverloads constructor(
 
     private fun initializeViews() {
         removeAllViews()
-        miniMapSeatViews = Seat.seats().map { seat ->
-            MiniMapSeatView(context).apply {
-                addToMap(
-                    seat.x.dp * WIDTH / SeatMapView.WIDTH,
-                    seat.y.dp * HEIGHT / SeatMapView.HEIGHT,
-                    seat.rotation,
-                )
+        seatButtons = Seat.seats().map { seat ->
+            SeatButton(context).apply {
+                addToMap(seat.x.dp, seat.y.dp, seat.rotation)
+                setOnClickListener {
+                    onSeatClickListener?.invoke(seat)
+                }
             }
         }
     }
 
     private fun updateViews() {
-        seats.zip(miniMapSeatViews).forEach { (seat, miniMapSeatView) ->
-            miniMapSeatView.handleMode(seat.mode)
+        seats.zip(seatButtons).forEach { (seat, seatButton) ->
+            seatButton.handleMode(seat.mode)
         }
     }
 
-    private fun MiniMapSeatView.addToMap(x: Int, y: Int, rotation: Float) {
+    private fun SeatButton.addToMap(x: Int, y: Int, rotation: Float) {
         this.rotation = rotation
-        this@MiniMapView.addView(this)
+        this@SeatMapView.addView(this)
         ConstraintSet().also { set ->
-            set.clone(this@MiniMapView)
+            set.clone(this@SeatMapView)
 
             set.connect(
                 id,
@@ -80,7 +85,7 @@ class MiniMapView @JvmOverloads constructor(
                 y,
             )
 
-            set.applyTo(this@MiniMapView)
+            set.applyTo(this@SeatMapView)
         }
     }
 }

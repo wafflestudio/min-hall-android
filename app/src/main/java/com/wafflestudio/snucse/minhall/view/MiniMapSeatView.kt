@@ -1,21 +1,23 @@
 package com.wafflestudio.snucse.minhall.view
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
 import com.wafflestudio.snucse.minhall.util.dp
 
-class MiniMapSeatView(context: Context) : View(context) {
+class MiniMapSeatView @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : View(context, attributeSet, defStyleAttr) {
 
     init {
         id = generateViewId()
 
-        background = ContextCompat.getDrawable(
-            context,
-            R.drawable.mini_map_seat_background
-        )
+        background = ContextCompat.getDrawable(context, R.drawable.mini_map_seat_background)
 
         isEnabled = false
         isActivated = true

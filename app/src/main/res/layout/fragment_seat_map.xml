@@ -60,7 +60,7 @@
         app:zoomEnabled="true"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.wafflestudio.snucse.minhall.view.SeatMapView
             android:id="@+id/map"
             android:layout_width="1435dp"
             android:layout_height="618dp"
