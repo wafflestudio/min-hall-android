@@ -1,9 +1,12 @@
 package com.wafflestudio.snucse.minhall.view.ui.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSettingBinding
 import com.wafflestudio.snucse.minhall.view.AppBar
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
@@ -28,11 +31,20 @@ class SettingFragment : BaseFragment() {
 
     private fun initializeViews(binding: FragmentSettingBinding) {
         initializeAppBar(binding.appBar)
+
+        binding.contactContainer.setOnClickListener {
+            dial(getString(R.string.contact_number))
+        }
     }
 
     private fun initializeAppBar(appBar: AppBar) {
         appBar.setOnBackPressedListener {
             requireActivity().onBackPressed()
         }
+    }
+
+    private fun dial(phoneNumber: String) {
+        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${phoneNumber}"))
+        startActivity(dialIntent)
     }
 }
