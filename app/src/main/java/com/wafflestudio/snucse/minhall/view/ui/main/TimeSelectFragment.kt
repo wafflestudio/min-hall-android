@@ -12,8 +12,6 @@ class TimeSelectFragment : BaseFragment() {
 
     companion object {
         const val TAG = "TimeSelect"
-
-        fun create() = TimeSelectFragment()
     }
 
     private var _binding: FragmentTimeSelectBinding? = null
@@ -41,12 +39,20 @@ class TimeSelectFragment : BaseFragment() {
     }
 
     private fun initializeViews() {
+        initializeAppBar()
+
         binding.startTimeSelect.setOnTimeChangedListener { timeSelectViewModel.setStartTime(it) }
         binding.endTimeSelect.setOnTimeChangedListener { timeSelectViewModel.setEndTime(it) }
 
         binding.ctaButton.isEnabled = true
         binding.ctaButton.setOnClickListener {
             (activity as? MainActivity)?.toSeatMap()
+        }
+    }
+
+    private fun initializeAppBar() {
+        binding.appBar.setOnSettingsPressedListener {
+            (activity as? MainActivity)?.toSetting()
         }
     }
 }

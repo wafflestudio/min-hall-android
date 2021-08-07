@@ -15,8 +15,6 @@ class ReservationFragment : BaseFragment() {
 
     companion object {
         const val TAG = "Reservation"
-
-        fun create() = ReservationFragment()
     }
 
     private val seatMapViewModel: SeatMapViewModel by activityViewModels()
@@ -41,7 +39,11 @@ class ReservationFragment : BaseFragment() {
         initializeButtons(binding)
     }
 
-    private fun initializeAppBar(appBar: AppBar) = Unit
+    private fun initializeAppBar(appBar: AppBar) {
+        appBar.setOnSettingsPressedListener {
+            (activity as? MainActivity)?.toSetting()
+        }
+    }
 
     private fun initializeTexts(binding: FragmentReservationBinding) {
         // Dummy data

@@ -30,4 +30,9 @@
     <string name="reservation_label">나의 예약</string>
     <string name="reservation_cancel">취소하기</string>
     <string name="reservation_elongate">예약시간 연장하기</string>
+
+    <string name="contact_title">문제 발생시 연락처</string>
+    <string name="contact_number">02&#8211;0000&#8211;0000</string>
+
+    <string name="logout">로그아웃</string>
 </resources>

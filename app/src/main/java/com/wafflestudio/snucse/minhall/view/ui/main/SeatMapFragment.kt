@@ -19,8 +19,6 @@ class SeatMapFragment : BaseFragment() {
 
     companion object {
         const val TAG = "SeatMap"
-
-        fun create() = SeatMapFragment()
     }
 
     private var _binding: FragmentSeatMapBinding? = null
@@ -64,6 +62,9 @@ class SeatMapFragment : BaseFragment() {
 
     private fun initializeAppBar() {
         binding.appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
+        binding.appBar.setOnSettingsPressedListener {
+            (activity as? MainActivity)?.toSetting()
+        }
     }
 
     private fun initializeCtaButton() {

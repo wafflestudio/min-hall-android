@@ -13,8 +13,6 @@ class ElongateReservationFragment : BaseFragment() {
 
     companion object {
         const val TAG = "ElongateReservation"
-
-        fun create() = ElongateReservationFragment()
     }
 
     private val timeSelectViewModel: TimeSelectViewModel by activityViewModels()
@@ -39,6 +37,9 @@ class ElongateReservationFragment : BaseFragment() {
 
     private fun initializeAppBar(appBar: AppBar) {
         appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
+        appBar.setOnSettingsPressedListener {
+            (activity as? MainActivity)?.toSetting()
+        }
     }
 
     private fun initializeTimeSelects(binding: FragmentElongateReservationBinding) {

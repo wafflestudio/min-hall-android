@@ -28,8 +28,16 @@ class MainActivity : BaseActivity() {
     private fun initializeViews() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            add(R.id.seat_map_fragment_container, SeatMapFragment.create(), SeatMapFragment.TAG)
-            add(R.id.fragment_container, TimeSelectFragment.create(), TimeSelectFragment.TAG)
+            add(R.id.seat_map_fragment_container, SeatMapFragment(), SeatMapFragment.TAG)
+            add(R.id.fragment_container, TimeSelectFragment(), TimeSelectFragment.TAG)
+        }
+    }
+
+    fun toSetting() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add(R.id.fragment_container, SettingFragment(), SettingFragment.TAG)
+            addToBackStack(null)
         }
     }
 
@@ -44,7 +52,7 @@ class MainActivity : BaseActivity() {
     fun toReservation() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            add(R.id.fragment_container, ReservationFragment.create(), ReservationFragment.TAG)
+            add(R.id.fragment_container, ReservationFragment(), ReservationFragment.TAG)
         }
     }
 
@@ -53,11 +61,10 @@ class MainActivity : BaseActivity() {
             setReorderingAllowed(true)
             replace(
                 R.id.fragment_container,
-                ElongateReservationFragment.create(),
+                ElongateReservationFragment(),
                 ElongateReservationFragment.TAG
             )
             addToBackStack(null)
         }
-
     }
 }
