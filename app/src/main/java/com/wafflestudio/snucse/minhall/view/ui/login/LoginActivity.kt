@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.wafflestudio.snucse.minhall.databinding.ActivityLoginBinding
+import com.wafflestudio.snucse.minhall.network.error.ApiServerException
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,7 +72,9 @@ class LoginActivity : BaseActivity() {
                 startActivity(MainActivity.intent(this))
                 finish()
             }, { t ->
-                Toast.makeText(this, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                (t as? ApiServerException)?.body?.let {
+                    Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
+                }
             })
             .disposeOnDestroy()
     }

@@ -1,9 +1,13 @@
 package com.wafflestudio.snucse.minhall.di
 
+import android.app.Application
 import com.squareup.moshi.Moshi
+import com.wafflestudio.snucse.minhall.App
 import com.wafflestudio.snucse.minhall.BuildConfig
+import com.wafflestudio.snucse.minhall.network.AppInterceptor
 import com.wafflestudio.snucse.minhall.network.login.LoginApiService
 import com.wafflestudio.snucse.minhall.network.login.LoginRetrofitService
+import com.wafflestudio.snucse.minhall.preference.AppPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +24,18 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder()
+    fun provideHttpClient(
+        application: Application,
+        preference: AppPreference,
+        moshi: Moshi,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addNetworkInterceptor(
+            AppInterceptor(
+                app = application as App,
+                preference = preference,
+                moshi = moshi,
+            )
+        )
         .build()
 
     @Provides
