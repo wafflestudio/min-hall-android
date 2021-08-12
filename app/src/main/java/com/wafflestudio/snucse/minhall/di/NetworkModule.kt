@@ -7,12 +7,15 @@ import com.wafflestudio.snucse.minhall.BuildConfig
 import com.wafflestudio.snucse.minhall.network.AppInterceptor
 import com.wafflestudio.snucse.minhall.network.login.LoginApiService
 import com.wafflestudio.snucse.minhall.network.login.LoginRetrofitService
+import com.wafflestudio.snucse.minhall.network.seat.SeatApiService
+import com.wafflestudio.snucse.minhall.network.seat.SeatRetrofitService
 import com.wafflestudio.snucse.minhall.preference.AppPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -29,6 +32,14 @@ class NetworkModule {
         preference: AppPreference,
         moshi: Moshi,
     ): OkHttpClient = OkHttpClient.Builder()
+        .also {
+            if (BuildConfig.DEBUG) {
+                val loggingInterceptor = HttpLoggingInterceptor().apply {
+                    setLevel(HttpLoggingInterceptor.Level.BODY)
+                }
+                it.addInterceptor(loggingInterceptor)
+            }
+        }
         .addNetworkInterceptor(
             AppInterceptor(
                 app = application as App,
@@ -54,4 +65,9 @@ class NetworkModule {
     @Singleton
     fun provideLoginApiService(retrofit: Retrofit): LoginApiService =
         LoginApiService(retrofit.create(LoginRetrofitService::class.java))
+
+    @Provides
+    @Singleton
+    fun provideSeatApiService(retrofit: Retrofit): SeatApiService =
+        SeatApiService(retrofit.create(SeatRetrofitService::class.java))
 }

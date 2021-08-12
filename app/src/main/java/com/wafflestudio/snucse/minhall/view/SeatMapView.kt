@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
+import com.wafflestudio.snucse.minhall.model.SeatPosition
 import com.wafflestudio.snucse.minhall.util.dp
 
 class SeatMapView @JvmOverloads constructor(
@@ -28,14 +29,14 @@ class SeatMapView @JvmOverloads constructor(
             field = value
             updateViews()
         }
-    private var onSeatClickListener: ((Seat) -> Unit)? = null
-    private var seatButtons: List<SeatButton> = emptyList()
+    private var onSeatClickListener: ((String) -> Unit)? = null
+    private var seatButtons: Map<String, SeatButton> = emptyMap()
 
     init {
         background = ContextCompat.getDrawable(context, R.drawable.map)
     }
 
-    fun setOnSeatClickListener(onSeatClickListener: ((Seat) -> Unit)?) {
+    fun setOnSeatClickListener(onSeatClickListener: ((String) -> Unit)?) {
         this.onSeatClickListener = onSeatClickListener
     }
 
@@ -48,19 +49,20 @@ class SeatMapView @JvmOverloads constructor(
 
     private fun initializeViews() {
         removeAllViews()
-        seatButtons = Seat.seats().map { seat ->
-            SeatButton(context).apply {
-                addToMap(seat.x.dp, seat.y.dp, seat.rotation)
+        seatButtons = SeatPosition.seatIdToPosition.entries.map { (seatId, position) ->
+            seatId to SeatButton(context).apply {
+                addToMap(position.x.dp, position.y.dp, position.rotation)
                 setOnClickListener {
-                    onSeatClickListener?.invoke(seat)
+                    onSeatClickListener?.invoke(seatId)
                 }
             }
         }
+            .toMap()
     }
 
     private fun updateViews() {
-        seats.zip(seatButtons).forEach { (seat, seatButton) ->
-            seatButton.handleMode(seat.mode)
+        seats.forEach { seat ->
+            seatButtons[seat.id]?.handleMode(seat.mode)
         }
     }
 

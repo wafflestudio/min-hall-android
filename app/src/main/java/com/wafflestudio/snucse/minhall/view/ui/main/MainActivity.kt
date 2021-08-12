@@ -8,7 +8,9 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     companion object {

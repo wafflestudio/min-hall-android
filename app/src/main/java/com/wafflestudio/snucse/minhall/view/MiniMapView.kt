@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Seat
+import com.wafflestudio.snucse.minhall.model.SeatPosition
 import com.wafflestudio.snucse.minhall.util.dp
 
 class MiniMapView @JvmOverloads constructor(
@@ -19,7 +20,8 @@ class MiniMapView @JvmOverloads constructor(
         private const val HEIGHT = 80
     }
 
-    private var miniMapSeatViews: List<MiniMapSeatView> = emptyList()
+    private var miniMapSeatViews: Map<String, MiniMapSeatView> = emptyMap()
+
     var seats: List<Seat> = emptyList()
         set(value) {
             if (field != value) {
@@ -42,20 +44,21 @@ class MiniMapView @JvmOverloads constructor(
 
     private fun initializeViews() {
         removeAllViews()
-        miniMapSeatViews = Seat.seats().map { seat ->
-            MiniMapSeatView(context).apply {
+        miniMapSeatViews = SeatPosition.seatIdToPosition.entries.map { (seatId, position) ->
+            seatId to MiniMapSeatView(context).apply {
                 addToMap(
-                    seat.x.dp * WIDTH / SeatMapView.WIDTH,
-                    seat.y.dp * HEIGHT / SeatMapView.HEIGHT,
-                    seat.rotation,
+                    position.x.dp * WIDTH / SeatMapView.WIDTH,
+                    position.y.dp * HEIGHT / SeatMapView.HEIGHT,
+                    position.rotation,
                 )
             }
         }
+            .toMap()
     }
 
     private fun updateViews() {
-        seats.zip(miniMapSeatViews).forEach { (seat, miniMapSeatView) ->
-            miniMapSeatView.handleMode(seat.mode)
+        seats.forEach { seat ->
+            miniMapSeatViews[seat.id]?.handleMode(seat.mode)
         }
     }
 

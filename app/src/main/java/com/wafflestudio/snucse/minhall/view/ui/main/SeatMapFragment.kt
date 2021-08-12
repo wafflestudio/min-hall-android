@@ -12,9 +12,12 @@ import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
+@AndroidEntryPoint
 class SeatMapFragment : BaseFragment() {
 
     companion object {
@@ -140,9 +143,17 @@ class SeatMapFragment : BaseFragment() {
     }
 
     private fun initializeMap() {
-        binding.map.setOnSeatClickListener {
-            seatMapViewModel.selectSeat(it.id)
+        binding.map.setOnSeatClickListener { seatId ->
+            seatMapViewModel.selectSeat(seatId)
         }
+        seatMapViewModel.getSeats()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Timber.d("initialized seats from server")
+            }, {
+                Timber.e(it)
+            })
     }
 
     private fun observeViewModels() {
