@@ -68,7 +68,6 @@ class LoginActivity : BaseActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Toast.makeText(this, "token: ${it.value}", Toast.LENGTH_SHORT).show()
                 startActivity(MainActivity.intent(this))
                 finish()
             }, { t ->
