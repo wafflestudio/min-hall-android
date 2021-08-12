@@ -5,10 +5,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import androidx.activity.viewModels
 import com.wafflestudio.snucse.minhall.databinding.ActivityLoginBinding
-import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
+import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import retrofit2.HttpException
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
     companion object {
@@ -16,6 +23,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityLoginBinding
+
+    private val viewModel: LoginActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +35,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun initializeViews() {
-        binding.loginButton.setOnClickListener {
-            startActivity(MainActivity.intent(this))
-            finish()
-        }
+        binding.loginButton.setOnClickListener { attemptLogin() }
 
         binding.passwordInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -51,5 +57,22 @@ class LoginActivity : BaseActivity() {
 
     private fun webIntent(url: String): Intent = Intent(Intent.ACTION_VIEW).apply {
         data = Uri.parse(url)
+    }
+
+    private fun attemptLogin() {
+        viewModel.login(
+            username = binding.snucseIdInput.text.toString(),
+            password = binding.passwordInput.text.toString(),
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Toast.makeText(this, "token: ${it.value}", Toast.LENGTH_SHORT).show()
+                startActivity(MainActivity.intent(this))
+                finish()
+            }, { t ->
+                Toast.makeText(this, t.localizedMessage, Toast.LENGTH_SHORT).show()
+            })
+            .disposeOnDestroy()
     }
 }
