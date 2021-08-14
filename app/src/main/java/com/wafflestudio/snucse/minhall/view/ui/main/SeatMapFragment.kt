@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.activityViewModels
 import com.otaliastudios.zoom.ZoomEngine
@@ -14,6 +15,7 @@ import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
@@ -27,6 +29,7 @@ class SeatMapFragment : BaseFragment() {
     private var _binding: FragmentSeatMapBinding? = null
     private val binding get() = _binding!!
 
+    private val timeSelectViewModel: TimeSelectViewModel by activityViewModels()
     private val seatMapViewModel: SeatMapViewModel by activityViewModels()
 
     private val baselinedZoom
@@ -40,13 +43,16 @@ class SeatMapFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSeatMapBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.map.post {
             initializeViews()
             observeViewModels()
         }
-
-        return binding.root
     }
 
     override fun onDestroyView() {
@@ -146,17 +152,19 @@ class SeatMapFragment : BaseFragment() {
         binding.map.setOnSeatClickListener { seatId ->
             seatMapViewModel.selectSeat(seatId)
         }
-        seatMapViewModel.getSeats()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Timber.d("initialized seats from server")
-            }, {
-                Timber.e(it)
-            })
     }
 
     private fun observeViewModels() {
+        timeSelectViewModel.observeTimeRange()
+            .flatMapCompletable { (startAt, endAt) ->
+                seatMapViewModel.getSeats(startAt, endAt)
+                    .subscribeOn(Schedulers.io())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { t ->
+                Timber.e(t)
+            })
+
         seatMapViewModel.observeSeats()
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())

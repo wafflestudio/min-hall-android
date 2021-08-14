@@ -25,6 +25,7 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
 
         initializeViews()
+        observeViewModels()
     }
 
     private fun initializeViews() {
@@ -33,6 +34,10 @@ class MainActivity : BaseActivity() {
             add(R.id.seat_map_fragment_container, SeatMapFragment(), SeatMapFragment.TAG)
             add(R.id.fragment_container, TimeSelectFragment(), TimeSelectFragment.TAG)
         }
+    }
+
+    private fun observeViewModels() {
+
     }
 
     fun toSetting() {

@@ -2,6 +2,8 @@ package com.wafflestudio.snucse.minhall.model
 
 class Time(val hour: Int, val minute: Int) {
 
+    override fun toString(): String = String.format("%02d:%02d", hour, minute)
+
     fun roundToNext30Minutes(): Time {
         return if (minute > 30) {
             Time((hour + 1) % 24, 0)

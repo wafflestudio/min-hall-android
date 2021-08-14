@@ -35,7 +35,7 @@ class AppInterceptor(
 
     private fun addAuthorizationHeader(builder: Request.Builder) {
         preference.token.takeIf { it.isNotBlank() }?.let { token ->
-            builder.addHeader(AUTHORIZATION_HEADER, token)
+            builder.addHeader(AUTHORIZATION_HEADER, "Bearer $token")
         }
     }
 
