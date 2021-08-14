@@ -25,7 +25,8 @@ class App : Application() {
     fun signOut() {
         preference.clear()
         val loginIntent = LoginActivity.intent(this).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         startActivity(loginIntent)
     }

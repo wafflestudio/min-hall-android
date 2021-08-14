@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.wafflestudio.snucse.minhall.App
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSettingBinding
 import com.wafflestudio.snucse.minhall.view.AppBar
@@ -34,6 +35,10 @@ class SettingFragment : BaseFragment() {
 
         binding.contactContainer.setOnClickListener {
             dial(getString(R.string.contact_number))
+        }
+
+        binding.logoutContainer.setOnClickListener {
+            (requireActivity().application as App).signOut()
         }
     }
 
