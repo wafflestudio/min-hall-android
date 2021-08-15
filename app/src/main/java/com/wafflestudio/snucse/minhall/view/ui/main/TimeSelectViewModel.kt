@@ -23,6 +23,9 @@ class TimeSelectViewModel : ViewModel() {
             .roundToNext30Minutes()
     )
 
+    val timeRange: Pair<Time, Time>
+        get() = startTimeSubject.value to endTimeSubject.value
+
     fun observeTimeRange(): Observable<Pair<Time, Time>> =
         Observable.combineLatest(
             startTimeSubject.hide(),

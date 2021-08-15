@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.databinding.FragmentReservationBinding
+import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.view.AppBar
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 
-class ReservationFragment : BaseFragment() {
+class ReservationFragment(private val reservation: Reservation) : BaseFragment() {
 
     companion object {
         const val TAG = "Reservation"
@@ -46,8 +47,7 @@ class ReservationFragment : BaseFragment() {
     }
 
     private fun initializeTexts(binding: FragmentReservationBinding) {
-        // Dummy data
-        binding.timeRangeText.text = "15:30 ~ 17:00"
+        binding.timeRangeText.text = "${reservation.startAt} ~ ${reservation.endAt}"
     }
 
     private fun initializeButtons(binding: FragmentReservationBinding) {

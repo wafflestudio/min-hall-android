@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
+import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,10 +57,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun toReservation() {
+    fun toReservation(reservation: Reservation) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            add(R.id.fragment_container, ReservationFragment(), ReservationFragment.TAG)
+            add(R.id.fragment_container, ReservationFragment(reservation), ReservationFragment.TAG)
         }
     }
 

@@ -11,6 +11,8 @@ class AppPreference @Inject constructor(
 ) {
 
     var token by prefString(sharedPreferences, PrefKey.TOKEN)
+    var username by prefString(sharedPreferences, PrefKey.USERNAME)
+    var password by prefString(sharedPreferences, PrefKey.PASSWORD)
 
     fun clear(commit: Boolean = true) {
         sharedPreferences.edit(commit = commit) { clear() }

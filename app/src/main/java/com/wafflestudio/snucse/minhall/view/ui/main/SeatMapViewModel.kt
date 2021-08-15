@@ -24,11 +24,15 @@ class SeatMapViewModel @Inject constructor(
     fun observeSeatSelected(): Observable<Boolean> = seatsSubject
         .map { seats -> seats.any { seat -> seat.isSelected } }
 
-    fun getSeats(startAt: Time, endAt: Time): Completable = seatApiService.getSeats(startAt, endAt)
-        .doOnSuccess {
-            seatsSubject.onNext(it)
-        }
-        .ignoreElement()
+    val selectedSeat: Seat?
+        get() = seatsSubject.value.firstOrNull { it.isSelected }
+
+    fun fetchSeats(startAt: Time, endAt: Time): Completable =
+        seatApiService.getSeats(startAt, endAt)
+            .doOnSuccess {
+                seatsSubject.onNext(it)
+            }
+            .ignoreElement()
 
     fun selectSeat(seatId: String) {
         val newSeatState = seatsSubject.value.map { seat ->

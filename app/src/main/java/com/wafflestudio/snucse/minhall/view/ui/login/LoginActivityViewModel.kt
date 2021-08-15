@@ -18,6 +18,8 @@ class LoginActivityViewModel @Inject constructor(
         return loginApiService.login(username, password)
             .doOnSuccess {
                 appPreference.token = it.value
+                appPreference.username = username
+                appPreference.password = password
             }
     }
 }

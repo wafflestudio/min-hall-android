@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface SeatRetrofitService {
 
-    @GET("/seats/")
+    @GET("/seats")
     fun getSeats(
         @Query("startAt") startAt: String,
         @Query("endAt") endAt: String,
