@@ -29,8 +29,10 @@ class SeatMapViewModel @Inject constructor(
 
     fun fetchSeats(startAt: Time, endAt: Time): Completable =
         seatApiService.getSeats(startAt, endAt)
-            .doOnSuccess {
-                seatsSubject.onNext(it)
+            .doOnSuccess { seats ->
+                seatsSubject.onNext(seats.map { seat ->
+                    if (seat.id == selectedSeat?.id) seat.toggleSelect() else seat
+                })
             }
             .ignoreElement()
 

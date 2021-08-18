@@ -21,7 +21,7 @@ class TimeSelectView @JvmOverloads constructor(
 
     private val currentTime
         get() = Time(
-            Calendar.getInstance().get(Calendar.HOUR),
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
             Calendar.getInstance().get(Calendar.MINUTE),
         ).roundToNext30Minutes()
 

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import com.wafflestudio.snucse.minhall.databinding.DialogFragmentAlertBinding
 
 class AlertDialogFragment(
+    @StringRes private val bodyResId: Int,
     private val onConfirm: () -> Unit,
     private val onCancel: (() -> Unit)?,
 ) : BaseDialogFragment() {
@@ -22,17 +24,16 @@ class AlertDialogFragment(
 
         fun show(
             fragmentManager: FragmentManager,
-            body: String,
+            @StringRes bodyResId: Int,
             onConfirm: () -> Unit,
             onCancel: (() -> Unit)?,
-        ) = AlertDialogFragment(onConfirm, onCancel).apply {
-            arguments = Bundle().apply {
-                putString(EXTRA_BODY, body)
-            }
-        }.show(fragmentManager, TAG)
+        ) = AlertDialogFragment(
+            bodyResId,
+            onConfirm,
+            onCancel
+        )
+            .show(fragmentManager, TAG)
     }
-
-    private val body by lazy { arguments?.getString(EXTRA_BODY) ?: "" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +55,6 @@ class AlertDialogFragment(
         )
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -74,6 +74,6 @@ class AlertDialogFragment(
             binding.cancelButton.visibility = View.GONE
         }
 
-        binding.bodyText.text = body
+        binding.bodyText.text = getString(bodyResId)
     }
 }

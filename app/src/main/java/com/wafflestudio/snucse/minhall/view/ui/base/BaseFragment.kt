@@ -2,6 +2,7 @@ package com.wafflestudio.snucse.minhall.view.ui.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -63,7 +64,7 @@ abstract class BaseFragment : Fragment() {
         NoticeDialogFragment.show(childFragmentManager, title, body, action)
     }
 
-    protected fun showAlertDialog(body: String, onConfirm: () -> Unit, onCancel: (() -> Unit)?) {
-        AlertDialogFragment.show(childFragmentManager, body, onConfirm, onCancel)
+    protected fun showAlertDialog(@StringRes bodyResId: Int, onConfirm: () -> Unit, onCancel: (() -> Unit)?) {
+        AlertDialogFragment.show(childFragmentManager, bodyResId, onConfirm, onCancel)
     }
 }

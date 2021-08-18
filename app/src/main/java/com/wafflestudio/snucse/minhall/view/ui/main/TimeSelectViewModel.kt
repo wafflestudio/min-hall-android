@@ -10,14 +10,14 @@ class TimeSelectViewModel : ViewModel() {
 
     private val startTimeSubject = BehaviorSubject.createDefault(
         Time(
-            Calendar.getInstance().get(Calendar.HOUR),
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
             Calendar.getInstance().get(Calendar.MINUTE)
         )
             .roundToNext30Minutes()
     )
     private val endTimeSubject = BehaviorSubject.createDefault(
         Time(
-            Calendar.getInstance().get(Calendar.HOUR),
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
             Calendar.getInstance().get(Calendar.MINUTE)
         )
             .roundToNext30Minutes()

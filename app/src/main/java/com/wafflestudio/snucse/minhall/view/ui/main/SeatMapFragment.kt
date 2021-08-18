@@ -12,6 +12,8 @@ import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
 import com.wafflestudio.snucse.minhall.network.error.ApiServerException
+import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
+import com.wafflestudio.snucse.minhall.util.showToast
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -83,13 +85,8 @@ class SeatMapFragment : BaseFragment() {
                 reservationViewModel.createReservation(seatId, startAt, endAt)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        (activity as? MainActivity)?.toReservation(it)
-                    }, {
-                        (it as? ApiServerException)?.let {
-                            Timber.e(it.body.toString())
-                        }
-                        Timber.e(it)
+                    .subscribe({}, { t ->
+                        ErrorUtil.showToast(requireContext(), t)
                     })
             }
         }

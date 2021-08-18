@@ -1,11 +1,10 @@
 package com.wafflestudio.snucse.minhall.di
 
 import android.app.Application
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
-import com.wafflestudio.snucse.minhall.App
 import com.wafflestudio.snucse.minhall.BuildConfig
 import com.wafflestudio.snucse.minhall.network.AppInterceptor
-import com.wafflestudio.snucse.minhall.network.HeaderUtil
 import com.wafflestudio.snucse.minhall.network.login.LoginApiService
 import com.wafflestudio.snucse.minhall.network.login.LoginRetrofitService
 import com.wafflestudio.snucse.minhall.network.login.RefreshApiService
@@ -19,13 +18,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.*
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
-import javax.net.ssl.HttpsURLConnection
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,41 +32,24 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(
-        authenticator: Authenticator,
-        preference: AppPreference,
-        moshi: Moshi,
-    ): OkHttpClient = OkHttpClient.Builder()
-        .addLoggingInterceptor()
-        .addNetworkInterceptor(
-            AppInterceptor(
-                preference = preference,
-                moshi = moshi,
-            )
-        )
-        .authenticator(authenticator)
-        .build()
-
-    @Provides
-    @Singleton
-    fun provideAuthenticator(
         application: Application,
         preference: AppPreference,
+        moshi: Moshi,
         refreshApiService: RefreshApiService,
-    ): Authenticator = Authenticator { route, response ->
-        if (response.code == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-            refreshApiService.refresh(
-                preference.username,
-                preference.password,
-            )?.let { token ->
-                preference.token = token.value
-                val builder = response.request.newBuilder()
-                HeaderUtil.addAuthorizationHeader(builder, token)
-                builder.build()
-            } ?: run {
-                (application as App).signOut()
-                null
-            }
-        } else null
+    ): OkHttpClient {
+
+        val appInterceptor = AppInterceptor(
+            application = application,
+            preference = preference,
+            moshi = moshi,
+            refreshApiService = refreshApiService,
+        )
+
+        return OkHttpClient.Builder()
+            .addLoggingInterceptor()
+            .addInterceptor(appInterceptor)
+            .authenticator(appInterceptor)
+            .build()
     }
 
     private fun OkHttpClient.Builder.addLoggingInterceptor(): OkHttpClient.Builder {
@@ -77,6 +58,7 @@ class NetworkModule {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             }
             addInterceptor(loggingInterceptor)
+            addNetworkInterceptor(StethoInterceptor())
         }
         return this
     }

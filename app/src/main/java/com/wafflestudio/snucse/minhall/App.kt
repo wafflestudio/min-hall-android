@@ -2,6 +2,7 @@ package com.wafflestudio.snucse.minhall
 
 import android.app.Application
 import android.content.Intent
+import com.facebook.stetho.Stetho
 import com.wafflestudio.snucse.minhall.preference.AppPreference
 import com.wafflestudio.snucse.minhall.view.ui.login.LoginActivity
 import dagger.hilt.android.HiltAndroidApp
@@ -19,6 +20,7 @@ class App : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
         }
     }
 

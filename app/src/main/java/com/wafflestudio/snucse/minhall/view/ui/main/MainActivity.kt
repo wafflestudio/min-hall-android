@@ -3,13 +3,16 @@ package com.wafflestudio.snucse.minhall.view.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
 import com.wafflestudio.snucse.minhall.model.Reservation
-import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -20,6 +23,8 @@ class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val reservationViewModel: ReservationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,6 +32,16 @@ class MainActivity : BaseActivity() {
 
         initializeViews()
         observeViewModels()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        reservationViewModel.getMyReservation()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {})
+            .disposeOnPause()
     }
 
     private fun initializeViews() {
@@ -38,7 +53,26 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observeViewModels() {
-
+        reservationViewModel.observeReservation()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ optional ->
+                if (optional.isPresent) {
+                    if (supportFragmentManager.findFragmentByTag(ReservationFragment.TAG) == null) {
+                        toReservation()
+                    }
+                } else {
+                    supportFragmentManager.findFragmentByTag(ReservationFragment.TAG)
+                        ?.let { fragment ->
+                            supportFragmentManager.commit {
+                                remove(fragment)
+                            }
+                        }
+                }
+            }, { t ->
+                Timber.e(t)
+            })
+            .disposeOnDestroy()
     }
 
     fun toSetting() {
@@ -57,19 +91,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun toReservation(reservation: Reservation) {
+    private fun toReservation() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            add(R.id.fragment_container, ReservationFragment(reservation), ReservationFragment.TAG)
+            add(R.id.fragment_container, ReservationFragment(), ReservationFragment.TAG)
         }
     }
 
-    fun toElongateReservation() {
+    fun toElongateReservation(reservation: Reservation) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace(
                 R.id.fragment_container,
-                ElongateReservationFragment(),
+                ElongateReservationFragment(reservation),
                 ElongateReservationFragment.TAG
             )
             addToBackStack(null)

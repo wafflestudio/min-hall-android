@@ -1,6 +1,20 @@
 package com.wafflestudio.snucse.minhall.model
 
-class Time(val hour: Int, val minute: Int) {
+class Time {
+
+    val hour: Int
+    val minute: Int
+
+    constructor(hour: Int, minute: Int) {
+        this.hour = hour
+        this.minute = minute
+    }
+
+    constructor(hhmm: String) {
+        this.hour = hhmm.split(":")[0].toInt()
+        this.minute = hhmm.split(":")[1].toInt()
+    }
+
 
     override fun toString(): String = String.format("%02d:%02d", hour, minute)
 

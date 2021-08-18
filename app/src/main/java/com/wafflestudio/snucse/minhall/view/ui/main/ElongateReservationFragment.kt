@@ -6,46 +6,66 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.databinding.FragmentElongateReservationBinding
-import com.wafflestudio.snucse.minhall.view.AppBar
+import com.wafflestudio.snucse.minhall.model.Reservation
+import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class ElongateReservationFragment : BaseFragment() {
+class ElongateReservationFragment(private val reservation: Reservation) : BaseFragment() {
 
     companion object {
         const val TAG = "ElongateReservation"
     }
 
-    private val timeSelectViewModel: TimeSelectViewModel by activityViewModels()
+    private var _binding: FragmentElongateReservationBinding? = null
+    private val binding get() = _binding!!
+
+    private val reservationViewModel: ReservationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentElongateReservationBinding.inflate(inflater, container, false)
-
-        initializeViews(binding)
-        observeViewModels(binding)
-
+        _binding = FragmentElongateReservationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun initializeViews(binding: FragmentElongateReservationBinding) {
-        initializeAppBar(binding.appBar)
-        initializeTimeSelects(binding)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initializeViews()
     }
 
-    private fun initializeAppBar(appBar: AppBar) {
-        appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
-        appBar.setOnSettingsPressedListener {
+    private fun initializeViews() {
+        initializeAppBar()
+        initializeTimeSelects()
+        initializeButtons()
+    }
+
+    private fun initializeAppBar() {
+        binding.appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
+        binding.appBar.setOnSettingsPressedListener {
             (activity as? MainActivity)?.toSetting()
         }
     }
 
-    private fun initializeTimeSelects(binding: FragmentElongateReservationBinding) {
-        binding.startTimeSelect.setOnTimeChangedListener { timeSelectViewModel.setStartTime(it) }
-        binding.endTimeSelect.setOnTimeChangedListener { timeSelectViewModel.setEndTime(it) }
+    private fun initializeTimeSelects() {
+        binding.startTimeSelect.time = reservation.startAt
+        binding.endTimeSelect.time = reservation.endAt
     }
 
-    private fun observeViewModels(binding: FragmentElongateReservationBinding) = Unit
+    private fun initializeButtons() {
+        binding.ctaButton.setOnClickListener {
+            reservationViewModel.elongateReservation(binding.endTimeSelect.time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    requireActivity().onBackPressed()
+                }, { t ->
+                    ErrorUtil.showToast(requireContext(), t)
+                })
+        }
+    }
 }
