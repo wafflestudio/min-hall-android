@@ -1,6 +1,7 @@
 package com.wafflestudio.snucse.minhall.network.reservation
 
 import com.wafflestudio.snucse.minhall.model.Reservation
+import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.network.reservation.dto.CreateReservationRequestDto
 import com.wafflestudio.snucse.minhall.network.reservation.dto.UpdateReservationRequestDto
@@ -31,4 +32,8 @@ class ReservationApiService(private val reservationRetrofitService: ReservationR
             reservationId,
             UpdateReservationRequestDto(endAt.toString())
         )
+
+    fun getReservationSettings(): Single<ReservationSettings> =
+        reservationRetrofitService.getReservationSettings()
+            .map { ReservationSettings(Time(it.openTime), Time(it.closeTime)) }
 }

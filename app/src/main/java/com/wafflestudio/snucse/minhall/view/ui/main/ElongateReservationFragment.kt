@@ -53,7 +53,20 @@ class ElongateReservationFragment(private val reservation: Reservation) : BaseFr
 
     private fun initializeTimeSelects() {
         binding.startTimeSelect.time = reservation.startAt
+        binding.startTimeSelect.upperBound = reservation.startAt
+        binding.startTimeSelect.lowerBound = reservation.startAt
         binding.endTimeSelect.time = reservation.endAt
+        binding.endTimeSelect.lowerBound = reservation.endAt
+        reservationViewModel.getSettings()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                binding.endTimeSelect.upperBound = it.closeAt
+                binding.endTimeSelect.boundTime()
+            }, { t ->
+                ErrorUtil.showToast(requireContext(), t)
+            })
+            .disposeOnDestroyView()
     }
 
     private fun initializeButtons() {
@@ -66,6 +79,7 @@ class ElongateReservationFragment(private val reservation: Reservation) : BaseFr
                 }, { t ->
                     ErrorUtil.showToast(requireContext(), t)
                 })
+                .disposeOnDestroyView()
         }
     }
 }

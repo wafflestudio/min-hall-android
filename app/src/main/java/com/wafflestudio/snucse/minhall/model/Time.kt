@@ -38,4 +38,42 @@ class Time {
         (hour + 23 + (minute + 30) / 60) % 24,
         (minute + 30) % 60,
     )
+
+    fun checkRoomForMinuteIncrement(upperBound: Time): Boolean {
+        val next = this.incrementMinute()
+        return next.lessOrEqual(upperBound)
+    }
+
+    fun checkRoomForHourIncrement(upperBound: Time): Boolean {
+        val next = this.incrementHour()
+        return next.lessOrEqual(upperBound)
+    }
+
+    fun checkRoomForMinuteDecrement(lowerBound: Time): Boolean {
+        val next = this.decrementMinute()
+        return next.greaterOrEqual(lowerBound)
+    }
+
+    fun checkRoomForHourDecrement(lowerBound: Time): Boolean {
+        val next = this.decrementHour()
+        return next.greaterOrEqual(lowerBound)
+    }
+
+    fun bound(lowerBound: Time, upperBound: Time): Time = when {
+        lessOrEqual(lowerBound) -> lowerBound
+        greaterOrEqual(upperBound) -> upperBound
+        else -> this
+    }
+
+    private fun greaterOrEqual(than: Time): Boolean = when {
+        hour > than.hour -> true
+        hour == than.hour -> minute >= than.minute
+        else -> false
+    }
+
+    private fun lessOrEqual(than: Time): Boolean = when {
+        hour < than.hour -> true
+        hour == than.hour -> minute <= than.minute
+        else -> false
+    }
 }

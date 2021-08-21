@@ -2,11 +2,13 @@ package com.wafflestudio.snucse.minhall.view.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snucse.minhall.model.Reservation
+import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.network.reservation.ReservationApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.util.*
 import javax.inject.Inject
@@ -56,4 +58,6 @@ class ReservationViewModel @Inject constructor(
             Completable.complete()
         }
     }
+
+    fun getSettings(): Single<ReservationSettings> = reservationApiService.getReservationSettings()
 }

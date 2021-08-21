@@ -2,6 +2,7 @@ package com.wafflestudio.snucse.minhall.network.reservation
 
 import com.wafflestudio.snucse.minhall.network.reservation.dto.CreateReservationRequestDto
 import com.wafflestudio.snucse.minhall.network.reservation.dto.ReservationDto
+import com.wafflestudio.snucse.minhall.network.reservation.dto.ReservationSettingsDto
 import com.wafflestudio.snucse.minhall.network.reservation.dto.UpdateReservationRequestDto
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -23,4 +24,7 @@ interface ReservationRetrofitService {
         @Path("reservation-id") reservationId: Long,
         @Body body: UpdateReservationRequestDto,
     ): Completable
+
+    @GET("/reservations/settings")
+    fun getReservationSettings(): Single<ReservationSettingsDto>
 }

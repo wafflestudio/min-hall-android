@@ -3,6 +3,7 @@ package com.wafflestudio.snucse.minhall.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ViewTimeSelectBinding
@@ -17,6 +18,18 @@ class TimeSelectView @JvmOverloads constructor(
 
     private val binding = ViewTimeSelectBinding.inflate(LayoutInflater.from(context), this)
 
+    var upperBound: Time = Time(23, 59)
+        set(value) {
+            field = value
+            checkBounds()
+        }
+
+    var lowerBound: Time = Time(0, 0)
+        set(value) {
+            field = value
+            checkBounds()
+        }
+
     private var timeChangedListener: ((Time) -> Unit)? = null
 
     private val currentTime
@@ -25,16 +38,22 @@ class TimeSelectView @JvmOverloads constructor(
             Calendar.getInstance().get(Calendar.MINUTE),
         ).roundToNext30Minutes()
 
-    var time: Time = currentTime
+    fun boundTime() {
+        time = time
+    }
+
+    var time: Time = currentTime.bound(lowerBound, upperBound)
         set(value) {
-            field = value
-            timeChangedListener?.invoke(value)
-            binding.hourText.text = context.getString(R.string.time_format, value.hour)
-            binding.minuteText.text = context.getString(R.string.time_format, value.minute)
+            field = value.bound(lowerBound, upperBound)
+            checkBounds()
+            timeChangedListener?.invoke(field)
+            binding.hourText.text = context.getString(R.string.time_format, field.hour)
+            binding.minuteText.text = context.getString(R.string.time_format, field.minute)
         }
 
     init {
         initializeViews()
+        checkBounds()
     }
 
     fun setOnTimeChangedListener(timeChangedListener: ((Time) -> Unit)?) {
@@ -47,5 +66,29 @@ class TimeSelectView @JvmOverloads constructor(
         binding.minuteUpButton.setOnClickListener { time = time.incrementMinute() }
         binding.minuteDownButton.setOnClickListener { time = time.decrementMinute() }
         time = currentTime
+    }
+
+    private fun checkBounds() {
+        if (time.checkRoomForHourIncrement(upperBound)) {
+            binding.hourUpButton.visibility = View.VISIBLE
+        } else {
+            binding.hourUpButton.visibility = View.INVISIBLE
+        }
+        if (time.checkRoomForMinuteIncrement(upperBound)) {
+            binding.minuteUpButton.visibility = View.VISIBLE
+        } else {
+            binding.minuteUpButton.visibility = View.INVISIBLE
+        }
+
+        if (time.checkRoomForHourDecrement(lowerBound)) {
+            binding.hourDownButton.visibility = View.VISIBLE
+        } else {
+            binding.hourDownButton.visibility = View.INVISIBLE
+        }
+        if (time.checkRoomForMinuteDecrement(lowerBound)) {
+            binding.minuteDownButton.visibility = View.VISIBLE
+        } else {
+            binding.minuteDownButton.visibility = View.INVISIBLE
+        }
     }
 }
