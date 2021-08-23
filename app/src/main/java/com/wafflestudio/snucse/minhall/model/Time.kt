@@ -74,7 +74,7 @@ class Time(val hour: Int, val minute: Int) : Parcelable {
         else -> this
     }
 
-    private fun greaterOrEqual(than: Time): Boolean = when {
+    fun greaterOrEqual(than: Time): Boolean = when {
         hour > than.hour -> true
         hour == than.hour -> minute >= than.minute
         else -> false

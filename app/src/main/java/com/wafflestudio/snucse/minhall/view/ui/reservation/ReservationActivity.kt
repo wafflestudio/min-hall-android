@@ -9,9 +9,13 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityReservationBinding
 import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
+import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 import com.wafflestudio.snucse.minhall.view.ui.main.ReservationViewModel
 import com.wafflestudio.snucse.minhall.view.ui.setting.SettingFragment
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -41,6 +45,10 @@ class ReservationActivity : BaseActivity() {
         reservationViewModel.reservation = Optional.of(reservation)
 
         initializeViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
         observeViewModels()
     }
 
@@ -52,7 +60,17 @@ class ReservationActivity : BaseActivity() {
     }
 
     private fun observeViewModels() {
-
+        reservationViewModel.observeReservationDidEnd()
+            .flatMapSingle { reservationViewModel.getSettings() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ reservationSettings ->
+                startActivity(MainActivity.intent(this, reservationSettings))
+                finish()
+            }, { t ->
+                Timber.e(t)
+            })
+            .disposeOnPause()
     }
 
     fun toElongateReservation(reservation: Reservation) {

@@ -28,7 +28,7 @@ object NotificationUtil {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 context.getString(R.string.app_name),
-                NotificationManager.IMPORTANCE_DEFAULT,
+                NotificationManager.IMPORTANCE_HIGH,
             )
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -116,13 +116,13 @@ object NotificationUtil {
         val expireAtMillis = expireAt.toInstant(zoneOffset).toEpochMilli()
         val almostExpireAtMillis = almostExpireAt.toInstant(zoneOffset).toEpochMilli()
 
-        alarmManager?.setAndAllowWhileIdle(
+        alarmManager?.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             expireAtMillis,
             expiredIntent
         )
 
-        alarmManager?.setAndAllowWhileIdle(
+        alarmManager?.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             almostExpireAtMillis,
             almostExpiredIntent,

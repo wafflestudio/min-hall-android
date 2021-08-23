@@ -9,7 +9,6 @@ import com.wafflestudio.snucse.minhall.network.login.RefreshApiService
 import com.wafflestudio.snucse.minhall.preference.AppPreference
 import okhttp3.*
 import timber.log.Timber
-import javax.net.ssl.HttpsURLConnection
 
 class AppInterceptor(
     private val application: Application,
@@ -37,15 +36,17 @@ class AppInterceptor(
 
     private fun handleError(response: Response) {
         response.body?.string()?.let {
-            moshi.adapter(ErrorResponseBody::class.java).fromJson(it)?.let { body ->
-                Timber.e("Server error: $body.")
-                throw ApiServerException(body)
+            val body = try {
+                moshi.adapter(ErrorResponseBody::class.java).fromJson(it)
+            } catch (t: Throwable) {
+                throw ApiServerException(ErrorResponseBody(null, null, null))
             }
+            body?.let { throw ApiServerException(body) }
         }
     }
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        if (response.code == HttpsURLConnection.HTTP_UNAUTHORIZED) {
+        try {
             refreshApiService.refresh(
                 preference.username,
                 preference.password,
@@ -55,11 +56,13 @@ class AppInterceptor(
                 builder.addAuthorizationHeader(token.value)
                 return builder.build()
             } ?: (application as App).signOut()
+        } catch (t: Throwable) {
+            Timber.e(t)
         }
         return null
     }
 
     private fun Request.Builder.addAuthorizationHeader(token: String) {
-        addHeader(AUTHORIZATION_HEADER, "Bearer $token")
+        header(AUTHORIZATION_HEADER, "Bearer $token")
     }
 }

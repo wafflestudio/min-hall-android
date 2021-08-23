@@ -8,11 +8,9 @@ import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.databinding.FragmentTimeSelectBinding
 import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
-import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
 class TimeSelectFragment(private val reservationSettings: ReservationSettings) : BaseFragment() {
