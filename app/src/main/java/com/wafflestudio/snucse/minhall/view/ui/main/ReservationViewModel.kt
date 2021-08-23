@@ -5,7 +5,6 @@ import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.network.reservation.ReservationApiService
-import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -22,20 +21,19 @@ class ReservationViewModel @Inject constructor(
     private val reservationSubject =
         BehaviorSubject.createDefault(Optional.empty<Reservation>())
 
-    val reservation: Optional<Reservation>
+    var reservation: Optional<Reservation>
         get() = reservationSubject.value
+        set(value) = reservationSubject.onNext(value)
 
     fun observeReservation(): Observable<Optional<Reservation>> = reservationSubject.hide()
 
-    fun getMyReservation(): Completable =
+    fun getMyReservation(): Single<Reservation> =
         reservationApiService.getMyReservation()
             .doOnSuccess { reservationSubject.onNext(Optional.of(it)) }
-            .ignoreElement()
 
-    fun createReservation(seatId: String, startAt: Time, endAt: Time): Completable =
+    fun createReservation(seatId: String, startAt: Time, endAt: Time): Single<Reservation> =
         reservationApiService.createReservation(seatId, startAt, endAt)
             .doOnSuccess { reservationSubject.onNext(Optional.of(it)) }
-            .ignoreElement()
 
     fun cancelReservation(): Completable {
         return if (reservationSubject.value.isPresent) {

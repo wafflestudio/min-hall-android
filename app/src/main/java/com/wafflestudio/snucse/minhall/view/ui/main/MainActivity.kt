@@ -7,23 +7,31 @@ import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
-import com.wafflestudio.snucse.minhall.model.Reservation
+import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
+import com.wafflestudio.snucse.minhall.view.ui.setting.SettingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     companion object {
-        fun intent(context: Context) = Intent(context, MainActivity::class.java)
+        private const val RESERVATION_SETTINGS_KEY = "ReservationSettingsExtraKey"
+
+        fun intent(context: Context, reservationSettings: ReservationSettings) =
+            Intent(context, MainActivity::class.java).apply {
+                putExtra(RESERVATION_SETTINGS_KEY, reservationSettings)
+            }
     }
 
     private lateinit var binding: ActivityMainBinding
 
     private val reservationViewModel: ReservationViewModel by viewModels()
+
+    private val reservationSettings: ReservationSettings
+        get() = intent.getParcelableExtra(RESERVATION_SETTINGS_KEY)!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +39,6 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
 
         initializeViews()
-        observeViewModels()
     }
 
     override fun onResume() {
@@ -47,35 +54,20 @@ class MainActivity : BaseActivity() {
     private fun initializeViews() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            add(R.id.seat_map_fragment_container, SeatMapFragment(), SeatMapFragment.TAG)
-            add(R.id.fragment_container, TimeSelectFragment(), TimeSelectFragment.TAG)
+            add(
+                R.id.seat_map_fragment_container,
+                SeatMapFragment(),
+                SeatMapFragment.TAG
+            )
+            add(
+                R.id.fragment_container,
+                TimeSelectFragment(reservationSettings),
+                TimeSelectFragment.TAG
+            )
         }
     }
 
-    private fun observeViewModels() {
-        reservationViewModel.observeReservation()
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ optional ->
-                if (optional.isPresent) {
-                    if (supportFragmentManager.findFragmentByTag(ReservationFragment.TAG) == null) {
-                        toReservation()
-                    }
-                } else {
-                    supportFragmentManager.findFragmentByTag(ReservationFragment.TAG)
-                        ?.let { fragment ->
-                            supportFragmentManager.commit {
-                                remove(fragment)
-                            }
-                        }
-                }
-            }, { t ->
-                Timber.e(t)
-            })
-            .disposeOnDestroy()
-    }
-
-    fun toSetting() {
+    override fun toSetting() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.fragment_container, SettingFragment(), SettingFragment.TAG)
@@ -87,25 +79,6 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             supportFragmentManager.findFragmentByTag(TimeSelectFragment.TAG)?.let { hide(it) }
-            addToBackStack(null)
-        }
-    }
-
-    private fun toReservation() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add(R.id.fragment_container, ReservationFragment(), ReservationFragment.TAG)
-        }
-    }
-
-    fun toElongateReservation(reservation: Reservation) {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(
-                R.id.fragment_container,
-                ElongateReservationFragment(reservation),
-                ElongateReservationFragment.TAG
-            )
             addToBackStack(null)
         }
     }

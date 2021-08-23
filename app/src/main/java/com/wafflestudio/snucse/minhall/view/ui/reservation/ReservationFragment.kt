@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui.main
+package com.wafflestudio.snucse.minhall.view.ui.reservation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentReservationBinding
+import com.wafflestudio.snucse.minhall.model.ReservationSettings
+import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
 import com.wafflestudio.snucse.minhall.notification.NotificationUtil
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
+import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
+import com.wafflestudio.snucse.minhall.view.ui.main.ReservationViewModel
+import com.wafflestudio.snucse.minhall.view.ui.main.SeatMapViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
@@ -53,14 +59,14 @@ class ReservationFragment : BaseFragment() {
 
     private fun initializeAppBar() {
         binding.appBar.setOnSettingsPressedListener {
-            (activity as? MainActivity)?.toSetting()
+            (activity as? BaseActivity)?.toSetting()
         }
     }
 
     private fun initializeButtons() {
         binding.ctaButton.setOnClickListener {
             reservationViewModel.reservation.ifPresent { reservation ->
-                (activity as? MainActivity)?.toElongateReservation(reservation)
+                (activity as? ReservationActivity)?.toElongateReservation(reservation)
             }
         }
 
@@ -69,11 +75,18 @@ class ReservationFragment : BaseFragment() {
                 R.string.reservation_cancel_alert,
                 {
                     reservationViewModel.cancelReservation()
+                        .andThen(reservationViewModel.getSettings())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
+                        .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
+                        .doFinally { binding.progress.visibility = View.GONE }
+                        .subscribe({ reservationSettings ->
                             NotificationUtil.cancelExpirationNotifications(requireContext())
-                        }, { Timber.e(it) })
+                            toMain(reservationSettings)
+                        }, { t ->
+                            ErrorUtil.showToast(requireContext(), t)
+                        })
+                        .disposeOnDestroyView()
                 },
                 {}
             )
@@ -107,5 +120,12 @@ class ReservationFragment : BaseFragment() {
             }, { t ->
                 Timber.e(t)
             })
+    }
+
+    private fun toMain(reservationSettings: ReservationSettings) {
+        activity?.run {
+            startActivity(MainActivity.intent(this, reservationSettings))
+            finish()
+        }
     }
 }

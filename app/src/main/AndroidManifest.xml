@@ -39,6 +39,11 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".view.ui.reservation.ReservationActivity"
+            android:screenOrientation="portrait"
+            />
+
         <receiver android:name=".notification.AlarmReceiver" />
 
     </application>

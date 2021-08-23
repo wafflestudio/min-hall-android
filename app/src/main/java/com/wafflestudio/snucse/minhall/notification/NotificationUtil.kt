@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
+import com.wafflestudio.snucse.minhall.view.ui.splash.SplashActivity
 import org.threeten.bp.*
 import org.threeten.bp.temporal.ChronoUnit
 import org.threeten.bp.temporal.TemporalAccessor
@@ -42,11 +43,11 @@ object NotificationUtil {
         notificationId: Int,
     ) {
         Timber.d("-_-_- showReservationExpiringNotification")
-        val pendingIntent = MainActivity.intent(context).let { mainIntent ->
+        val pendingIntent = SplashActivity.intent(context).let { splashIntent ->
             PendingIntent.getActivity(
                 context,
                 0,
-                mainIntent,
+                splashIntent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
             )
         }
@@ -70,11 +71,11 @@ object NotificationUtil {
         notificationId: Int,
     ) {
         Timber.d("-_-_- showReservationExpiredNotification")
-        val pendingIntent = MainActivity.intent(context).let { mainIntent ->
+        val pendingIntent = SplashActivity.intent(context).let { splashIntent ->
             PendingIntent.getActivity(
                 context,
                 0,
-                mainIntent,
+                splashIntent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
             )
         }

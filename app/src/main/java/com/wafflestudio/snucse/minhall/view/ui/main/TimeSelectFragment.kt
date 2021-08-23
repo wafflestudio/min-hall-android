@@ -9,12 +9,13 @@ import com.wafflestudio.snucse.minhall.databinding.FragmentTimeSelectBinding
 import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
-class TimeSelectFragment : BaseFragment() {
+class TimeSelectFragment(private val reservationSettings: ReservationSettings) : BaseFragment() {
 
     companion object {
         const val TAG = "TimeSelect"
@@ -24,7 +25,6 @@ class TimeSelectFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val timeSelectViewModel: TimeSelectViewModel by activityViewModels()
-    private val reservationViewModel: ReservationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,17 +38,7 @@ class TimeSelectFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViews()
-        reservationViewModel.getSettings()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
-            .doFinally { binding.progress.visibility = View.GONE }
-            .subscribe({
-                setSettingsLimit(it)
-            }, { t ->
-                ErrorUtil.showToast(requireContext(), t)
-            })
-            .disposeOnDestroyView()
+        setSettingsLimit(reservationSettings)
     }
 
     override fun onDestroyView() {
@@ -95,7 +85,7 @@ class TimeSelectFragment : BaseFragment() {
 
     private fun initializeAppBar() {
         binding.appBar.setOnSettingsPressedListener {
-            (activity as? MainActivity)?.toSetting()
+            (activity as? BaseActivity)?.toSetting()
         }
     }
 }

@@ -26,4 +26,6 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun Disposable.disposeOnDestroy(): Disposable = this.apply {
         onDestroyCompositeDisposable.add(this)
     }
+
+    open fun toSetting() = Unit
 }

@@ -1,4 +1,4 @@
-package com.wafflestudio.snucse.minhall.view.ui.main
+package com.wafflestudio.snucse.minhall.view.ui.setting
 
 import android.content.Intent
 import android.net.Uri

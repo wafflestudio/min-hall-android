@@ -1,8 +1,11 @@
 package com.wafflestudio.snucse.minhall.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
-class Time {
+@Parcelize
+class Time(val hour: Int, val minute: Int) : Parcelable {
 
     companion object {
         val currentTime
@@ -12,18 +15,10 @@ class Time {
             ).roundToNext30Minutes()
     }
 
-    val hour: Int
-    val minute: Int
-
-    constructor(hour: Int, minute: Int) {
-        this.hour = hour
-        this.minute = minute
-    }
-
-    constructor(hhmm: String) {
-        this.hour = hhmm.split(":")[0].toInt()
-        this.minute = hhmm.split(":")[1].toInt()
-    }
+    constructor(hhmm: String) : this(
+        hhmm.split(":")[0].toInt(),
+        hhmm.split(":")[1].toInt(),
+    )
 
     override fun equals(other: Any?): Boolean =
         other is Time && other.minute == minute && other.hour == hour

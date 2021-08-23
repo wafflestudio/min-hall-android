@@ -11,11 +11,14 @@ import androidx.fragment.app.activityViewModels
 import com.otaliastudios.zoom.ZoomEngine
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
+import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.network.error.ApiServerException
 import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
 import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import com.wafflestudio.snucse.minhall.util.showToast
+import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
+import com.wafflestudio.snucse.minhall.view.ui.reservation.ReservationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -75,7 +78,7 @@ class SeatMapFragment : BaseFragment() {
     private fun initializeAppBar() {
         binding.appBar.setOnBackPressedListener { requireActivity().onBackPressed() }
         binding.appBar.setOnSettingsPressedListener {
-            (activity as? MainActivity)?.toSetting()
+            (activity as? BaseActivity)?.toSetting()
         }
     }
 
@@ -86,11 +89,12 @@ class SeatMapFragment : BaseFragment() {
                 reservationViewModel.createReservation(seatId, startAt, endAt)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
+                    .subscribe({ reservation ->
                         NotificationUtil.setFutureReservationExpirationNotification(
                             requireContext(),
                             endAt
                         )
+                        toReservation(reservation)
                     }, { t ->
                         ErrorUtil.showToast(requireContext(), t)
                     })
@@ -201,5 +205,12 @@ class SeatMapFragment : BaseFragment() {
                 Timber.e(t)
             })
             .disposeOnDestroyView()
+    }
+
+    private fun toReservation(reservation: Reservation) {
+        activity?.run {
+            startActivity(ReservationActivity.intent(this, reservation))
+            finish()
+        }
     }
 }

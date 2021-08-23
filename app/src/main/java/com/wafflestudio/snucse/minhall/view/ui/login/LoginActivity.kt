@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -68,8 +69,10 @@ class LoginActivity : BaseActivity() {
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                startActivity(MainActivity.intent(this))
+            .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
+            .doFinally { binding.progress.visibility = View.GONE }
+            .subscribe({ reservationSettings ->
+                startActivity(MainActivity.intent(this, reservationSettings))
                 finish()
             }, { t ->
                 ErrorUtil.showToast(this, t)
