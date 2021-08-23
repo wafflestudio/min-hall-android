@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentReservationBinding
+import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -70,7 +71,9 @@ class ReservationFragment : BaseFragment() {
                     reservationViewModel.cancelReservation()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({}, { Timber.e(it) })
+                        .subscribe({
+                            NotificationUtil.cancelExpirationNotifications(requireContext())
+                        }, { Timber.e(it) })
                 },
                 {}
             )

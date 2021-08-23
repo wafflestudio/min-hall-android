@@ -39,6 +39,8 @@
             android:screenOrientation="portrait"
             />
 
+        <receiver android:name=".notification.AlarmReceiver" />
+
     </application>
 
 </manifest>

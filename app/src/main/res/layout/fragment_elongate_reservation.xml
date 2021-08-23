@@ -140,6 +140,7 @@
         style="@style/CtaButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:enabled="false"
         android:text="@string/reservation_elongate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,6 +13,7 @@ import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.FragmentSeatMapBinding
 import com.wafflestudio.snucse.minhall.network.error.ApiServerException
 import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
+import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import com.wafflestudio.snucse.minhall.util.showToast
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,7 +86,12 @@ class SeatMapFragment : BaseFragment() {
                 reservationViewModel.createReservation(seatId, startAt, endAt)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({}, { t ->
+                    .subscribe({
+                        NotificationUtil.setFutureReservationExpirationNotification(
+                            requireContext(),
+                            endAt
+                        )
+                    }, { t ->
                         ErrorUtil.showToast(requireContext(), t)
                     })
             }

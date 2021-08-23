@@ -33,6 +33,11 @@
     <string name="reservation_cancel_alert">정말 예약을 취소하시겠습니까?</string>
     <string name="reservation_elongate">예약시간 연장하기</string>
 
+    <string name="reservation_expiration_5_minutes_before_title">예약이 곧 만료됩니다!</string>
+    <string name="reservation_expiration_5_minutes_before_body">예약 만료까지 5분 남았습니다. 시간이 부족하면 예약을 연장해주세요.</string>
+    <string name="reservation_expire_title">예약이 만료됐습니다.</string>
+    <string name="reservation_expire_body">민상렬홀을 사용해주셔서 감사합니다.</string>
+
     <string name="contact_title">문제 발생시 연락처</string>
     <string name="contact_number">02&#8211;0000&#8211;0000</string>
 

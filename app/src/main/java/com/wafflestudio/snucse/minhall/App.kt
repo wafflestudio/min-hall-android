@@ -3,6 +3,8 @@ package com.wafflestudio.snucse.minhall
 import android.app.Application
 import android.content.Intent
 import com.facebook.stetho.Stetho
+import com.jakewharton.threetenabp.AndroidThreeTen
+import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import com.wafflestudio.snucse.minhall.preference.AppPreference
 import com.wafflestudio.snucse.minhall.view.ui.login.LoginActivity
 import dagger.hilt.android.HiltAndroidApp
@@ -17,11 +19,14 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             Stetho.initializeWithDefaults(this)
         }
+
+        NotificationUtil.createNotificationChannel(this)
     }
 
     fun signOut() {

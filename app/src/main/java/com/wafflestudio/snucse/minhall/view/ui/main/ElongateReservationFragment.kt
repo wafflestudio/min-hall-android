@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.wafflestudio.snucse.minhall.databinding.FragmentElongateReservationBinding
 import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
+import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -71,14 +72,23 @@ class ElongateReservationFragment(private val reservation: Reservation) : BaseFr
                 ErrorUtil.showToast(requireContext(), t)
             })
             .disposeOnDestroyView()
+        binding.endTimeSelect.setOnTimeChangedListener { endAt ->
+            binding.ctaButton.isEnabled = reservation.endAt != endAt
+        }
     }
 
     private fun initializeButtons() {
         binding.ctaButton.setOnClickListener {
-            reservationViewModel.elongateReservation(binding.endTimeSelect.time)
+            val endAt = binding.endTimeSelect.time
+            reservationViewModel.elongateReservation(endAt)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    NotificationUtil.cancelExpirationNotifications(requireContext())
+                    NotificationUtil.setFutureReservationExpirationNotification(
+                        requireContext(),
+                        endAt
+                    )
                     requireActivity().onBackPressed()
                 }, { t ->
                     ErrorUtil.showToast(requireContext(), t)

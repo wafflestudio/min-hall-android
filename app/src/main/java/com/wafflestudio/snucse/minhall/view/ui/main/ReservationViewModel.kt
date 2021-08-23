@@ -5,6 +5,7 @@ import com.wafflestudio.snucse.minhall.model.Reservation
 import com.wafflestudio.snucse.minhall.model.ReservationSettings
 import com.wafflestudio.snucse.minhall.model.Time
 import com.wafflestudio.snucse.minhall.network.reservation.ReservationApiService
+import com.wafflestudio.snucse.minhall.notification.NotificationUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
