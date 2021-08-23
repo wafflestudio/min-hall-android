@@ -11,14 +11,12 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.model.Time
-import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 import com.wafflestudio.snucse.minhall.view.ui.splash.SplashActivity
-import org.threeten.bp.*
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.temporal.ChronoUnit
-import org.threeten.bp.temporal.TemporalAccessor
-import org.threeten.bp.temporal.TemporalUnit
-import timber.log.Timber
-import java.util.*
 
 object NotificationUtil {
 
@@ -42,7 +40,6 @@ object NotificationUtil {
         context: Context,
         notificationId: Int,
     ) {
-        Timber.d("-_-_- showReservationExpiringNotification")
         val pendingIntent = SplashActivity.intent(context).let { splashIntent ->
             PendingIntent.getActivity(
                 context,
@@ -70,7 +67,6 @@ object NotificationUtil {
         context: Context,
         notificationId: Int,
     ) {
-        Timber.d("-_-_- showReservationExpiredNotification")
         val pendingIntent = SplashActivity.intent(context).let { splashIntent ->
             PendingIntent.getActivity(
                 context,
@@ -95,15 +91,9 @@ object NotificationUtil {
     }
 
     fun getNotificationType(intent: Intent): NotificationType? =
-        when (val hi = intent.getStringExtra(NOTIFICATION_TYPE_KEY)) {
-            NotificationType.ALMOST_EXPIRED.name -> {
-                Timber.d("-_-_- 1 hi is $hi")
-                NotificationType.ALMOST_EXPIRED
-            }
-            NotificationType.EXPIRED.name -> {
-                Timber.d("-_-_- 2 hi is $hi")
-                NotificationType.EXPIRED
-            }
+        when (intent.getStringExtra(NOTIFICATION_TYPE_KEY)) {
+            NotificationType.ALMOST_EXPIRED.name -> NotificationType.ALMOST_EXPIRED
+            NotificationType.EXPIRED.name -> NotificationType.EXPIRED
             else -> null
         }
 
