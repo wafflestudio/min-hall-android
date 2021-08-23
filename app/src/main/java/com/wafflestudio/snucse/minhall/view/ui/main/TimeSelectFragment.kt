@@ -70,10 +70,12 @@ class TimeSelectFragment : BaseFragment() {
 
     private fun setSettingsLimit(settings: ReservationSettings) {
         binding.startTimeSelect.upperBound = settings.closeAt
-        binding.startTimeSelect.lowerBound = settings.openAt
+        binding.startTimeSelect.lowerBound =
+            settings.openAt.bound(Time.currentTime, settings.closeAt)
         binding.startTimeSelect.boundTime()
         binding.endTimeSelect.upperBound = settings.closeAt
-        binding.endTimeSelect.lowerBound = settings.openAt
+        binding.endTimeSelect.lowerBound =
+            settings.openAt.bound(Time.currentTime, settings.closeAt)
         binding.endTimeSelect.boundTime()
         observeTimeRange()
     }
@@ -85,6 +87,7 @@ class TimeSelectFragment : BaseFragment() {
             .subscribe({ (startAt, endAt) ->
                 binding.startTimeSelect.upperBound = endAt
                 binding.endTimeSelect.lowerBound = startAt
+                binding.ctaButton.isEnabled = startAt != endAt
             }, {
                 Timber.e(it)
             })

@@ -1,6 +1,16 @@
 package com.wafflestudio.snucse.minhall.model
 
+import java.util.*
+
 class Time {
+
+    companion object {
+        val currentTime
+            get() = Time(
+                Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+                Calendar.getInstance().get(Calendar.MINUTE),
+            ).roundToNext30Minutes()
+    }
 
     val hour: Int
     val minute: Int
@@ -15,6 +25,10 @@ class Time {
         this.minute = hhmm.split(":")[1].toInt()
     }
 
+    override fun equals(other: Any?): Boolean =
+        other is Time && other.minute == minute && other.hour == hour
+
+    override fun hashCode(): Int = hour.hashCode() * 31 + minute.hashCode()
 
     override fun toString(): String = String.format("%02d:%02d", hour, minute)
 

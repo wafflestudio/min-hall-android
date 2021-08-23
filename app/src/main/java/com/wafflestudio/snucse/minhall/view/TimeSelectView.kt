@@ -32,17 +32,11 @@ class TimeSelectView @JvmOverloads constructor(
 
     private var timeChangedListener: ((Time) -> Unit)? = null
 
-    private val currentTime
-        get() = Time(
-            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-            Calendar.getInstance().get(Calendar.MINUTE),
-        ).roundToNext30Minutes()
-
     fun boundTime() {
         time = time
     }
 
-    var time: Time = currentTime.bound(lowerBound, upperBound)
+    var time: Time = Time.currentTime.bound(lowerBound, upperBound)
         set(value) {
             field = value.bound(lowerBound, upperBound)
             checkBounds()
@@ -65,7 +59,7 @@ class TimeSelectView @JvmOverloads constructor(
         binding.hourDownButton.setOnClickListener { time = time.decrementHour() }
         binding.minuteUpButton.setOnClickListener { time = time.incrementMinute() }
         binding.minuteDownButton.setOnClickListener { time = time.decrementMinute() }
-        time = currentTime
+        time = Time.currentTime
     }
 
     private fun checkBounds() {
