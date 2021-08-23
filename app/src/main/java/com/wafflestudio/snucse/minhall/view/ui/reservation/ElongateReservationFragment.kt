@@ -85,6 +85,8 @@ class ElongateReservationFragment(private val reservation: Reservation) : BaseFr
             reservationViewModel.elongateReservation(endAt)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
+                .doFinally { binding.progress.visibility = View.GONE }
                 .subscribe({
                     NotificationUtil.cancelExpirationNotifications(requireContext())
                     NotificationUtil.setFutureReservationExpirationNotification(

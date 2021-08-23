@@ -89,6 +89,8 @@ class SeatMapFragment : BaseFragment() {
                 reservationViewModel.createReservation(seatId, startAt, endAt)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
+                    .doFinally { binding.progress.visibility = View.GONE }
                     .subscribe({ reservation ->
                         NotificationUtil.setFutureReservationExpirationNotification(
                             requireContext(),
