@@ -14,6 +14,9 @@ class AppPreference @Inject constructor(
     var username by prefString(sharedPreferences, PrefKey.USERNAME)
     var password by prefString(sharedPreferences, PrefKey.PASSWORD)
 
+    var noticeVersion by prefLong(sharedPreferences, PrefKey.NOTICE_VERSION)
+    var warningVersion by prefLong(sharedPreferences, PrefKey.WARNING_VERSION)
+
     fun clear(commit: Boolean = true) {
         sharedPreferences.edit(commit = commit) { clear() }
     }

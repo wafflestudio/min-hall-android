@@ -1,9 +1,7 @@
 package com.wafflestudio.snucse.minhall.view.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.wafflestudio.snucse.minhall.model.Reservation
-import com.wafflestudio.snucse.minhall.model.ReservationSettings
-import com.wafflestudio.snucse.minhall.model.Time
+import com.wafflestudio.snucse.minhall.model.*
 import com.wafflestudio.snucse.minhall.network.reservation.ReservationApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
@@ -26,7 +24,12 @@ class ReservationViewModel @Inject constructor(
         get() = reservationSubject.value
         set(value) = reservationSubject.onNext(value)
 
+    private val popUpSubject =
+        BehaviorSubject.createDefault<PopUp>(EmptyPopUp)
+
     fun observeReservation(): Observable<Optional<Reservation>> = reservationSubject.hide()
+
+    fun observePopUp(): Observable<PopUp> = popUpSubject.hide()
 
     fun getMyReservation(): Single<Reservation> =
         reservationApiService.getMyReservation()
@@ -67,4 +70,14 @@ class ReservationViewModel @Inject constructor(
             .map { Time.currentTime.greaterOrEqual(reservation.get().endAt) }
             .filter { it }
             .map { }
+
+    fun getNoticePopUp(): Completable =
+        reservationApiService.getReservationNotice()
+            .doOnSuccess { popUpSubject.onNext(it) }
+            .ignoreElement()
+
+    fun getWarningPopUp(): Completable =
+        reservationApiService.getReservationWarning()
+            .doOnSuccess { popUpSubject.onNext(it) }
+            .ignoreElement()
 }

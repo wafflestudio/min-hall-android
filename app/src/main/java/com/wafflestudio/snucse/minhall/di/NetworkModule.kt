@@ -105,6 +105,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideReservationApiService(retrofit: Retrofit): ReservationApiService =
-        ReservationApiService(retrofit.create(ReservationRetrofitService::class.java))
+    fun provideReservationApiService(
+        retrofit: Retrofit,
+        appPreference: AppPreference,
+    ): ReservationApiService =
+        ReservationApiService(
+            retrofit.create(ReservationRetrofitService::class.java),
+            appPreference,
+        )
 }

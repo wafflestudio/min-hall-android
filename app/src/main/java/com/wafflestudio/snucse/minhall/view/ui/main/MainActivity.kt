@@ -7,7 +7,11 @@ import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.wafflestudio.snucse.minhall.R
 import com.wafflestudio.snucse.minhall.databinding.ActivityMainBinding
+import com.wafflestudio.snucse.minhall.model.EmptyPopUp
+import com.wafflestudio.snucse.minhall.model.NoticePopUp
 import com.wafflestudio.snucse.minhall.model.ReservationSettings
+import com.wafflestudio.snucse.minhall.model.WarningPopUp
+import com.wafflestudio.snucse.minhall.network.error.ErrorUtil
 import com.wafflestudio.snucse.minhall.view.ui.base.BaseActivity
 import com.wafflestudio.snucse.minhall.view.ui.setting.SettingFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,12 +43,25 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
 
         initializeViews()
+        observeViewModels()
     }
 
     override fun onResume() {
         super.onResume()
 
         reservationViewModel.getMyReservation()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {})
+            .disposeOnPause()
+
+        reservationViewModel.getNoticePopUp()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {})
+            .disposeOnPause()
+
+        reservationViewModel.getWarningPopUp()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, {})
@@ -65,6 +82,25 @@ class MainActivity : BaseActivity() {
                 TimeSelectFragment.TAG
             )
         }
+    }
+
+    private fun observeViewModels() {
+        reservationViewModel.observePopUp()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ popUp ->
+                when (popUp) {
+                    is NoticePopUp -> {
+                        if (popUp.show) showNoticeDialog(popUp.title, popUp.message)
+                    }
+                    is WarningPopUp -> {
+                        if (popUp.show) showWarningDialog(popUp.title, popUp.message)
+                    }
+                    EmptyPopUp -> Unit
+                }
+            }, {
+                ErrorUtil.showToast(this, it)
+            })
     }
 
     override fun toSetting() {

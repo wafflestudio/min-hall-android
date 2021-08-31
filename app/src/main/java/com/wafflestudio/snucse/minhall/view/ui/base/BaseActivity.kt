@@ -1,6 +1,7 @@
 package com.wafflestudio.snucse.minhall.view.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
+import com.wafflestudio.snucse.minhall.R
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -28,4 +29,22 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun toSetting() = Unit
+
+    protected fun showNoticeDialog(title: String, body: String) {
+        NoticeDialogFragment.show(
+            supportFragmentManager,
+            title,
+            body,
+            getString(R.string.popup_action),
+        )
+    }
+
+    protected fun showWarningDialog(title: String, body: String) {
+        WarningDialogFragment.show(
+            supportFragmentManager,
+            title,
+            body,
+            getString(R.string.popup_action),
+        )
+    }
 }

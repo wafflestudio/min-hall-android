@@ -1,9 +1,6 @@
 package com.wafflestudio.snucse.minhall.network.reservation
 
-import com.wafflestudio.snucse.minhall.network.reservation.dto.CreateReservationRequestDto
-import com.wafflestudio.snucse.minhall.network.reservation.dto.ReservationDto
-import com.wafflestudio.snucse.minhall.network.reservation.dto.ReservationSettingsDto
-import com.wafflestudio.snucse.minhall.network.reservation.dto.UpdateReservationRequestDto
+import com.wafflestudio.snucse.minhall.network.reservation.dto.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
@@ -27,4 +24,10 @@ interface ReservationRetrofitService {
 
     @GET("/reservations/settings")
     fun getReservationSettings(): Single<ReservationSettingsDto>
+
+    @GET("/reservations/notice")
+    fun getReservationNotice(): Single<NoticeDto>
+
+    @GET("/reservations/warning")
+    fun getReservationWarning(): Single<WarningDto>
 }

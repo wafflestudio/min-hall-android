@@ -23,5 +23,6 @@
     <color name="seat">#CBCBD3</color>
     <color name="sub_text">#9C9D9E</color>
     <color name="hover">#B321D3D3</color>
+    <color name="warning">#FE6161</color>
     <color name="button_disabled">#ECECEF</color>
 </resources>
