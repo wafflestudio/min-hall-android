@@ -41,7 +41,10 @@
     <string name="reservation_expire_body">민상렬홀을 사용해주셔서 감사합니다.</string>
 
     <string name="contact_title">문제 발생시 연락처</string>
-    <string name="contact_number">02&#8211;0000&#8211;0000</string>
+    <string name="contact_number">880&#8211;1528</string>
+
+    <string name="wifi_title">Wi-Fi</string>
+    <string name="wifi_body">%1$s (비번: %2$s)</string>
 
     <string name="logout">로그아웃</string>
 

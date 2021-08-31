@@ -6,4 +6,6 @@ enum class PrefKey {
     PASSWORD,
     NOTICE_VERSION,
     WARNING_VERSION,
+    WIFI_NAME,
+    WIFI_PASSWORD,
 }

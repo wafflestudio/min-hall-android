@@ -37,7 +37,15 @@ class ReservationApiService(
 
     fun getReservationSettings(): Single<ReservationSettings> =
         reservationRetrofitService.getReservationSettings()
-            .map { ReservationSettings(Time(it.openTime), Time(it.closeTime)) }
+            .map {
+                val settings = ReservationSettings(
+                    openAt = Time(it.openTime),
+                    closeAt = Time(it.closeTime),
+                )
+                appPreference.wifiName = it.wiFiName
+                appPreference.wifiPassword = it.wiFiPassword
+                settings
+            }
 
     fun getReservationNotice(): Single<NoticePopUp> =
         reservationRetrofitService.getReservationNotice()

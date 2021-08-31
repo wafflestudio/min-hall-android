@@ -17,6 +17,9 @@ class AppPreference @Inject constructor(
     var noticeVersion by prefLong(sharedPreferences, PrefKey.NOTICE_VERSION)
     var warningVersion by prefLong(sharedPreferences, PrefKey.WARNING_VERSION)
 
+    var wifiName by prefString(sharedPreferences, PrefKey.NOTICE_VERSION)
+    var wifiPassword by prefString(sharedPreferences, PrefKey.WARNING_VERSION)
+
     fun clear(commit: Boolean = true) {
         sharedPreferences.edit(commit = commit) { clear() }
     }
