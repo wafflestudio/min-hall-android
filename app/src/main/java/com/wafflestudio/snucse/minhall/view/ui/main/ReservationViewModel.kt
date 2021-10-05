@@ -67,7 +67,10 @@ class ReservationViewModel @Inject constructor(
     fun observeReservationDidEnd(): Observable<Unit> =
         Observable.interval(1, TimeUnit.SECONDS)
             .filter { reservation.isPresent }
-            .map { Time.currentTime.greaterOrEqual(reservation.get().endAt) }
+            .map {
+                Time.currentTime.greaterOrEqual(reservation.get().endAt) &&
+                        Time.currentTime != reservation.get().endAt
+            }
             .filter { it }
             .map { }
 
