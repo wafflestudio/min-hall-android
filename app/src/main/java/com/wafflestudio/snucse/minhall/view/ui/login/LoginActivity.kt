@@ -16,6 +16,7 @@ import com.wafflestudio.snucse.minhall.view.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import retrofit2.HttpException
 
 @AndroidEntryPoint
@@ -55,6 +56,10 @@ class LoginActivity : BaseActivity() {
 
         binding.findPasswordButton.setOnClickListener {
             startActivity(webIntent("https://id.snucse.org/password-reset"))
+        }
+
+        KeyboardVisibilityEvent.setEventListener(this) { isOpen ->
+            binding.logo.visibility = if (isOpen) View.GONE else View.VISIBLE
         }
     }
 
