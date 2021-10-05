@@ -10,13 +10,32 @@ class PreferenceDelegate<T>(
     private val key: PrefKey,
     private val type: KClass<out Any>
 ) {
+
+    private fun <D> getDefaultOverException(default: D, supplier: () -> D): D {
+        return try {
+            supplier()
+        } catch (t: Throwable) {
+            default
+        }
+    }
+
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         return when (type) {
-            String::class -> sharedPreferences.getString(key.name, "")
-            Boolean::class -> sharedPreferences.getBoolean(key.name, false)
-            Float::class -> sharedPreferences.getFloat(key.name, 0f)
-            Int::class -> sharedPreferences.getInt(key.name, 0)
-            Long::class -> sharedPreferences.getLong(key.name, 0L)
+            String::class -> getDefaultOverException("") {
+                sharedPreferences.getString(key.name, "")
+            }
+            Boolean::class -> getDefaultOverException(false) {
+                sharedPreferences.getBoolean(key.name, false)
+            }
+            Float::class -> getDefaultOverException(0f) {
+                sharedPreferences.getFloat(key.name, 0f)
+            }
+            Int::class -> getDefaultOverException(0) {
+                sharedPreferences.getInt(key.name, 0)
+            }
+            Long::class -> getDefaultOverException(0L) {
+                sharedPreferences.getLong(key.name, 0L)
+            }
             else -> throw IllegalStateException("Preference must be either String, Boolean, Float, Int or Long")
         } as T
     }
