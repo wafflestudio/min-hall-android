@@ -1,6 +1,7 @@
 package com.wafflestudio.snucse.minhall.preference
 
 import android.content.SharedPreferences
+import timber.log.Timber
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -15,6 +16,7 @@ class PreferenceDelegate<T>(
         return try {
             supplier()
         } catch (t: Throwable) {
+            Timber.e(t)
             default
         }
     }
